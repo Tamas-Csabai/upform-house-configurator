@@ -31,9 +31,6 @@ namespace Upform.Highlight
                 highlightSONode = _currentHighlightSOs.AddLast(highlightSO);
             }
 
-            Debug.Log(_currentHighlightSOs.First.Value.name);
-            
-
             if (highlightSONode == _currentHighlightSOs.First)
             {
                 ApplyHighlight(highlightSO);
