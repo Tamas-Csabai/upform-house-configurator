@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Upform
+namespace Upform.Designer
 {
     public class Edge : MonoBehaviour
     {

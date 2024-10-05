@@ -94,18 +94,20 @@ namespace Upform.Interaction
 
         protected abstract InteractionHit Interact();
 
-        private void InteractDown()
+        private void InteractDown(InputModifier inputModifier)
         {
             if (_currentInteractable != null)
             {
+                _currentInteractionHit.InputModifier = inputModifier;
                 _currentInteractable.InteractDown(_currentInteractionHit);
             }
         }
 
-        private void InteractUp()
+        private void InteractUp(InputModifier inputModifier)
         {
             if (_currentInteractable != null)
             {
+                _currentInteractionHit.InputModifier = inputModifier;
                 _currentInteractable.InteractUp(_currentInteractionHit);
             }
 
@@ -115,18 +117,20 @@ namespace Upform.Interaction
             }
         }
 
-        private void ActionDown()
+        private void ActionDown(InputModifier inputModifier)
         {
             if (_currentInteractable != null)
             {
+                _currentInteractionHit.InputModifier = inputModifier;
                 _currentInteractable.ActionDown(_currentInteractionHit);
             }
         }
 
-        private void ActionUp()
+        private void ActionUp(InputModifier inputModifier)
         {
             if (_currentInteractable != null)
             {
+                _currentInteractionHit.InputModifier = inputModifier;
                 _currentInteractable.ActionUp(_currentInteractionHit);
             }
 

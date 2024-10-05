@@ -6,15 +6,9 @@ namespace Upform.Interaction
     public class InteractionTarget : MonoBehaviour
     {
 
-        [SerializeField] private new Collider collider;
         [SerializeField] private Interactable interactable;
 
         public Interactable Interactable => interactable;
-
-        private void Awake()
-        {
-            interactable.SetCollider(collider);
-        }
 
     }
 }

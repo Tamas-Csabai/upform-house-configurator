@@ -9,8 +9,8 @@ namespace Upform.Input
         protected bool _wasDown = false;
         protected bool _wasUp = false;
 
-        public event System.Action OnDown;
-        public event System.Action OnUp;
+        public event System.Action<InputModifier> OnDown;
+        public event System.Action<InputModifier> OnUp;
 
         public ButtonAction(InputDelegate inputDelegate) : base(inputDelegate) { }
 
@@ -35,7 +35,7 @@ namespace Upform.Input
                     _isDown = true;
                     _wasDown = true;
 
-                    OnDown?.Invoke();
+                    OnDown?.Invoke(inputModifier);
                 }
             }
             else
@@ -55,7 +55,7 @@ namespace Upform.Input
                     _isUp = true;
                     _wasUp = true;
 
-                    OnUp?.Invoke();
+                    OnUp?.Invoke(inputModifier);
                 }
             }
         }

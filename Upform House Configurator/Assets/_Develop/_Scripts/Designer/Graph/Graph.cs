@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Upform
+namespace Upform.Designer
 {
     public class Graph : MonoBehaviour
     {

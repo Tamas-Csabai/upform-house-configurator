@@ -75,11 +75,6 @@ namespace Upform.Interaction
             OnDisabled?.Invoke();
         }
 
-        public void SetCollider(Collider collider)
-        {
-            Collider = collider;
-        }
-
         public void HoverEnter(InteractionHit interactionHit)
         {
             if (!_isEnabled)
