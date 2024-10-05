@@ -1,4 +1,5 @@
 using UnityEngine;
+using Upform.Input;
 
 namespace Upform
 {
@@ -23,11 +24,11 @@ namespace Upform
         private bool _isMoving = false;
         private bool _canZoom = true;
 
-        private Vector3 _mousePosition;
-        private Vector3 _prevMousePosition;
+        private Vector3 _pointerPosition;
+        private Vector3 _prevPointerPosition;
         private Vector3 _moveStartPosition;
-        private Vector3 _mouseMoveStartPosition;
-        private Vector3 _mouseMoveOffset;
+        private Vector3 _pointerMoveStartPosition;
+        private Vector3 _pointerMoveOffset;
 
         private Vector3 _initialPosition;
         private Quaternion _initialRotation;
@@ -42,19 +43,19 @@ namespace Upform
 
         private void Start()
         {
-            _prevMousePosition = Input.mousePosition;
+            _prevPointerPosition = InputManager.Actions.PointerPosition.Get();
         }
 
         private void Update()
         {
-            _mousePosition = Input.mousePosition;
-            _mousePosition.z = 0;
+            _pointerPosition = InputManager.Actions.PointerPosition.Get();
+            _pointerPosition.z = 0;
 
             MoveCamera();
 
             ZoomCamera();
 
-            _prevMousePosition = _mousePosition;
+            _prevPointerPosition = _pointerPosition;
         }
 
         public void ResetTransform()
@@ -66,21 +67,21 @@ namespace Upform
 
         private void MoveCamera()
         {
-            if (!_isMoving && Input.GetKeyDown(moveKey))
+            if (!_isMoving && InputManager.Actions.CameraMove.GetDown())
             {
                 _isMoving = true;
-                _mouseMoveStartPosition = _mousePosition;
+                _pointerMoveStartPosition = _pointerPosition;
                 _moveStartPosition = transform.localPosition;
             }
 
             if (_isMoving)
             {
-                if (Input.GetKeyUp(moveKey))
+                if (InputManager.Actions.CameraMove.GetUp())
                     _isMoving = false;
 
-                _mouseMoveOffset = _mousePosition - _mouseMoveStartPosition;
+                _pointerMoveOffset = _pointerPosition - _pointerMoveStartPosition;
 
-                transform.localPosition = _moveStartPosition - transform.TransformDirection(PIXEL_TO_METER * moveSpeed * designerCamera.orthographicSize * _mouseMoveOffset);
+                transform.localPosition = _moveStartPosition - transform.TransformDirection(PIXEL_TO_METER * moveSpeed * designerCamera.orthographicSize * _pointerMoveOffset);
             }
         }
 
@@ -88,7 +89,7 @@ namespace Upform
         {
             if (_canZoom)
             {
-                Zoom(Input.mouseScrollDelta.y);
+                Zoom(InputManager.Actions.CameraZoomDelta.Get());
             }
         }
 
