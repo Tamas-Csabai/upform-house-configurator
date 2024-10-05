@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45664755189522f4eadd0123897d5b45, type: 3}
   m_Name: Hover
   m_EditorClassIdentifier: 
-  Priority: 800
+  Priority: 1000
   Color: {r: 0.4009434, g: 0.8941406, b: 1, a: 1}

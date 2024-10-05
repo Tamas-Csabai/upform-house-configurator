@@ -18,7 +18,7 @@ namespace Upform.Highlight
             {
                 if (highlightSONode.Value.Priority <= highlightSO.Priority)
                 {
-                    _currentHighlightSOs.AddBefore(highlightSONode, highlightSO);
+                    highlightSONode = _currentHighlightSOs.AddBefore(highlightSONode, highlightSO);
 
                     break;
                 }
@@ -31,7 +31,10 @@ namespace Upform.Highlight
                 highlightSONode = _currentHighlightSOs.AddLast(highlightSO);
             }
 
-            if(highlightSONode == _currentHighlightSOs.First)
+            Debug.Log(_currentHighlightSOs.First.Value.name);
+            
+
+            if (highlightSONode == _currentHighlightSOs.First)
             {
                 ApplyHighlight(highlightSO);
             }
@@ -39,8 +42,6 @@ namespace Upform.Highlight
 
         public void RemoveHighlight(HighlightSO highlightSO)
         {
-            LinkedListNode<HighlightSO> highlightSONode = _currentHighlightSOs.First;
-
             if(_currentHighlightSOs.First.Value == highlightSO)
             {
                 if(_currentHighlightSOs.First.Next != null)
