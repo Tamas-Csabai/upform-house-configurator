@@ -56,6 +56,8 @@ namespace Upform.Designer
                 topRightPoint.localPosition = topRight;
 
                 RecalculateMesh();
+
+                UpdateMeshCollider();
             }
         }
 
@@ -67,6 +69,8 @@ namespace Upform.Designer
             Length = Mathf.Abs(bottomLeftPoint.localPosition.x - bottomRightPoint.localPosition.x);
 
             RecalculateMesh();
+
+            UpdateMeshCollider();
         }
 
         public void Move(Vector3 position)
@@ -74,14 +78,30 @@ namespace Upform.Designer
             transform.position = position;
 
             RecalculateMesh();
+
+            UpdateMeshCollider();
         }
 
-        private void RecalculateMesh()
+        public void SetEndPoint(Vector3 endPoint)
+        {
+            float offsetZ = _thickness / 2f;
+
+            topRightPoint.position = endPoint;
+
+            bottomRightPoint.position = endPoint;
+
+            RecalculateMesh();
+        }
+
+        public void RecalculateMesh()
         {
             MeshBuilder.CreateQuadForMesh(ref _mesh, bottomLeftPoint.localPosition, bottomRightPoint.localPosition, topLeftPoint.localPosition, topRightPoint.localPosition);
 
             meshFilter.mesh = _mesh;
+        }
 
+        public void UpdateMeshCollider()
+        {
             meshCollider.sharedMesh = null;
             meshCollider.sharedMesh = _mesh;
         }

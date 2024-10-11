@@ -77,6 +77,8 @@ namespace Upform.Interaction
 
                         _currentInteractable.HoverEnter(_currentInteractionHit);
                     }
+
+                    _currentInteractable.Hovering(_currentInteractionHit);
                 }
                 else
                 {

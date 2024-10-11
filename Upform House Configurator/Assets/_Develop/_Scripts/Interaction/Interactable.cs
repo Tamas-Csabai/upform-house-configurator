@@ -11,6 +11,7 @@ namespace Upform.Interaction
         private bool _isRightClickInside = false;
 
         public event System.Action OnHoverEnter;
+        public event System.Action OnHovering;
         public event System.Action OnHoverExit;
 
         public event System.Action OnInteract;
@@ -85,6 +86,16 @@ namespace Upform.Interaction
             IsHovering = true;
 
             OnHoverEnter?.Invoke();
+        }
+
+        public void Hovering(InteractionHit interactionHit)
+        {
+            if (!_isEnabled)
+                return;
+
+            LastHoverInteractionHit = interactionHit;
+
+            OnHovering?.Invoke();
         }
 
         public void HoverExit(InteractionHit interactionHit)
