@@ -6,7 +6,7 @@ namespace Upform
     {
 
 #if UNITY_EDITOR
-        public static void EDITOR_GetComponents<T>(MonoBehaviour monoBehaviour, ref T[] objects) where T : UnityEngine.Object
+        public static void EDITOR_GetComponents<T>(MonoBehaviour monoBehaviour, ref T[] objects) where T : Object
         {
             UnityEditor.EditorUtility.SetDirty(monoBehaviour);
 
