@@ -118,5 +118,30 @@ namespace Upform.Designer
             meshCollider.sharedMesh = _mesh;
         }
 
+        public Vector3 GetClosestCenterPoint(Vector3 position)
+        {
+            Vector2 start = new Vector2(startPoint.position.x, startPoint.position.z);
+            Vector2 end = new Vector2(endPoint.position.x, endPoint.position.z);
+            Vector2 point = new Vector2(position.x, position.z);
+
+            Vector2 pointOnLine = FindNearestPointOnLine(start, end, point);
+
+            return new Vector3(pointOnLine.x, transform.position.y, pointOnLine.y);
+        }
+
+        public Vector2 FindNearestPointOnLine(Vector2 origin, Vector2 end, Vector2 point)
+        {
+            //Get heading
+            Vector2 heading = (end - origin);
+            float magnitudeMax = heading.magnitude;
+            heading.Normalize();
+
+            //Do projection from the point but clamp it
+            Vector2 lhs = point - origin;
+            float dotP = Vector2.Dot(lhs, heading);
+            dotP = Mathf.Clamp(dotP, 0f, magnitudeMax);
+            return origin + heading * dotP;
+        }
+
     }
 }

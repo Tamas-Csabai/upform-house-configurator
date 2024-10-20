@@ -9,13 +9,10 @@ namespace Upform.Core
     {
 
 #if UNITY_EDITOR
-        private Rect _EDITOR_DebugWindowRect = new Rect(20f, 100f, 300f, 100f);
+        private Rect _EDITOR_DebugWindowRect = new Rect(20f, 100f, 300f, 50f);
 #endif
 
         [SerializeField] private StateMachine stateMachine;
-
-        [Header("States")]
-        [SerializeField] private StateSO createNewWallStateSO;
 
         private void Start()
         {
@@ -41,11 +38,6 @@ namespace Upform.Core
         private void EDITOR_DrawWindow(int id)
         {
             GUILayout.Label("Current hit: " + stateMachine.CurrentState.StateSO.name);
-
-            if (GUILayout.Button("Create New Wall"))
-            {
-                stateMachine.SwitchState(createNewWallStateSO);
-            }
 
             GUI.DragWindow();
         }

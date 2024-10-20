@@ -17,6 +17,9 @@ namespace Upform.Interaction
 
         public event System.Action<InteractionHit> OnInteract;
         public event System.Action<InteractionHit> OnAction;
+        public event System.Action<InteractionHit> OnHovering;
+        public event System.Action<InteractionHit> OnHoverEnter;
+        public event System.Action<InteractionHit> OnHoverExit;
 
         protected virtual void Awake()
         {
@@ -70,21 +73,21 @@ namespace Upform.Interaction
                     {
                         if(_currentInteractable != null)
                         {
-                            _currentInteractable.HoverExit(_currentInteractionHit);
+                            HoverExit();
                         }
 
                         _currentInteractable = _currentInteractionHit.Interactable;
 
-                        _currentInteractable.HoverEnter(_currentInteractionHit);
+                        HoverEnter();
                     }
 
-                    _currentInteractable.Hovering(_currentInteractionHit);
+                    Hovering();
                 }
                 else
                 {
                     if(_currentInteractable != null)
                     {
-                        _currentInteractable.HoverExit(_currentInteractionHit);
+                        HoverExit();
 
                         _currentInteractable = null;
                     }
@@ -140,6 +143,27 @@ namespace Upform.Interaction
             {
                 OnAction?.Invoke(_currentInteractionHit);
             }
+        }
+
+        private void HoverEnter()
+        {
+            _currentInteractable.HoverEnter(_currentInteractionHit);
+
+            OnHoverEnter?.Invoke(_currentInteractionHit);
+        }
+
+        private void HoverExit()
+        {
+            _currentInteractable.HoverExit(_currentInteractionHit);
+
+            OnHoverExit?.Invoke(_currentInteractionHit);
+        }
+
+        private void Hovering()
+        {
+            _currentInteractable.Hovering(_currentInteractionHit);
+
+            OnHovering?.Invoke(_currentInteractionHit);
         }
 
 #if UNITY_EDITOR

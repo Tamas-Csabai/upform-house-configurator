@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections;
 using UnityEngine;
 using Upform.Designer;
@@ -21,6 +22,7 @@ namespace Upform.Core
         private bool _isStartPointPlaced = false;
         private Vector3 _wallStartPoint;
         private Vector3 _hoverPoint;
+        private Wall _currentHoveredWall;
 
         private GameObject _pointVisualObject;
         private Wall _newWall;
@@ -39,8 +41,11 @@ namespace Upform.Core
             SelectionManager.ClearSelection();
 
             InteractionManager.OnInteract += Interact;
-            designerSheetInteractable.OnHovering += Hovering;
+            InteractionManager.OnHovering += Hovering;
+            InteractionManager.OnHoverEnter += HoverEnter;
+            InteractionManager.OnHoverExit += HoverExit;
 
+            _currentHoveredWall = null;
             _newWall = null;
             _isStartPointPlaced = false;
             _wallStartPoint = Vector3.zero;
@@ -60,12 +65,46 @@ namespace Upform.Core
             StopPlaceWallEndPoint();
 
             InteractionManager.OnInteract -= Interact;
-            designerSheetInteractable.OnHovering -= Hovering;
+            InteractionManager.OnHovering -= Hovering;
+            InteractionManager.OnHoverEnter -= HoverEnter;
+            InteractionManager.OnHoverExit -= HoverExit;
         }
 
-        private void Hovering()
+        private void HoverEnter(InteractionHit interactionHit)
         {
-            _hoverPoint = designerSheetInteractable.LastHoverInteractionHit.Point;
+            if(interactionHit.Interactable.TryGetComponent(out Wall wall))
+            {
+                if(wall != _newWall)
+                {
+                    _currentHoveredWall = wall;
+                }
+            }
+        }
+
+        private void HoverExit(InteractionHit interactionHit)
+        {
+            if (interactionHit.Interactable == null)
+            {
+                _currentHoveredWall = null;
+                return;
+            }
+
+            if (interactionHit.Interactable.TryGetComponent(out Wall wall))
+            {
+                if (wall != _newWall)
+                {
+                    _currentHoveredWall = wall;
+                }
+            }
+            else
+            {
+                _currentHoveredWall = null;
+            }
+        }
+
+        private void Hovering(InteractionHit interactionHit)
+        {
+            _hoverPoint = interactionHit.Point;
         }
 
         private void Interact(InteractionHit interactionHit)
@@ -132,6 +171,11 @@ namespace Upform.Core
                 if(_newWall != null)
                 {
                     _newWall.SetEndPoint(_hoverPoint);
+                }
+
+                if(_currentHoveredWall != null)
+                {
+                    _newWall.SetEndPoint(_currentHoveredWall.GetClosestCenterPoint(_hoverPoint));
                 }
 
                 yield return null;
