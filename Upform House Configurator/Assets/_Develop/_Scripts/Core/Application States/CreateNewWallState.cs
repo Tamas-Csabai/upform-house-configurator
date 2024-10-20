@@ -14,18 +14,19 @@ namespace Upform.Core
 
         [SerializeField] private StateSO hasSelectionStateSO;
         [SerializeField] private GameObject pointVisualObjectPrefab;
+        [SerializeField] private GameObject confirmPointObjectPrefab;
         [SerializeField] private Wall newWallPrefab;
         [SerializeField] private Transform wallsParent;
-        [SerializeField] private Interactable designerSheetInteractable;
 
         private Coroutine _placeWallEndPoint_Routine;
         private bool _isStartPointPlaced = false;
         private Vector3 _wallStartPoint;
-        private Vector3 _hoverPoint;
         private Wall _currentHoveredWall;
 
         private GameObject _pointVisualObject;
+        private Interactable _confirmPointInteractable;
         private Wall _newWall;
+        private Wall _prevWall;
 
         public override void OnEntering()
         {
@@ -36,21 +37,29 @@ namespace Upform.Core
                 _pointVisualObject.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             }
 
+            if (_confirmPointInteractable == null)
+            {
+                _confirmPointInteractable = Instantiate(confirmPointObjectPrefab).GetComponent<Interactable>();
+                _confirmPointInteractable.transform.SetParent(transform, true);
+                _confirmPointInteractable.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                _confirmPointInteractable.OnInteract += Confirm;
+            }
+
             _pointVisualObject.SetActive(true);
+            _confirmPointInteractable.gameObject.SetActive(false);
 
             SelectionManager.ClearSelection();
+
+            _currentHoveredWall = null;
+            _prevWall = null;
+            _newWall = null;
+            _isStartPointPlaced = false;
+            _wallStartPoint = Vector3.zero;
 
             InteractionManager.OnInteract += Interact;
             InteractionManager.OnHovering += Hovering;
             InteractionManager.OnHoverEnter += HoverEnter;
             InteractionManager.OnHoverExit += HoverExit;
-
-            _currentHoveredWall = null;
-            _newWall = null;
-            _isStartPointPlaced = false;
-            _wallStartPoint = Vector3.zero;
-
-            StartPlaceWallEndPoint();
         }
 
         public override void Evaluate()
@@ -61,8 +70,6 @@ namespace Upform.Core
         public override void OnExiting()
         {
             _pointVisualObject.SetActive(false);
-
-            StopPlaceWallEndPoint();
 
             InteractionManager.OnInteract -= Interact;
             InteractionManager.OnHovering -= Hovering;
@@ -104,7 +111,19 @@ namespace Upform.Core
 
         private void Hovering(InteractionHit interactionHit)
         {
-            _hoverPoint = interactionHit.Point;
+            _pointVisualObject.transform.position = interactionHit.Point;
+
+            if (_newWall != null)
+            {
+                if (_currentHoveredWall != null)
+                {
+                    _newWall.SetEndPoint(_currentHoveredWall.GetClosestCenterPoint(interactionHit.Point));
+                }
+                else
+                {
+                    _newWall.SetEndPoint(interactionHit.Point);
+                }
+            }
         }
 
         private void Interact(InteractionHit interactionHit)
@@ -119,16 +138,35 @@ namespace Upform.Core
             }
             else
             {
+                Vector3 hitPoint = new Vector3(interactionHit.Point.x, wallsParent.position.y, interactionHit.Point.z);
+
                 _newWall.SetEndPoint(interactionHit.Point);
 
                 _newWall.UpdateMeshCollider();
 
-                Selectable newWallSelectable = _newWall.GetComponent<Selectable>();
+                _confirmPointInteractable.transform.position = hitPoint;
 
-                newWallSelectable.SelectOnly();
+                _confirmPointInteractable.gameObject.SetActive(true);
 
-                Exit(hasSelectionStateSO);
+                _wallStartPoint = interactionHit.Point;
+
+                _prevWall = _newWall;
+
+                _newWall = CreateNewWall();
             }
+        }
+
+        private void Confirm()
+        {
+            _confirmPointInteractable.gameObject.SetActive(false);
+
+            Destroy(_newWall.gameObject);
+
+            Selectable newWallSelectable = _prevWall.GetComponent<Selectable>();
+
+            newWallSelectable.SelectOnly();
+
+            Exit(hasSelectionStateSO);
         }
 
         private Wall CreateNewWall()
@@ -141,47 +179,6 @@ namespace Upform.Core
 
             return newWall;
         }
-
-        private void StartPlaceWallEndPoint()
-        {
-            if(_placeWallEndPoint_Routine != null)
-            {
-                StopCoroutine(_placeWallEndPoint_Routine);
-            }
-
-            _placeWallEndPoint_Routine = StartCoroutine(PlaceWallEndPoint_Routine());
-        }
-
-        private void StopPlaceWallEndPoint()
-        {
-            if (_placeWallEndPoint_Routine != null)
-            {
-                StopCoroutine(_placeWallEndPoint_Routine);
-            }
-
-            _placeWallEndPoint_Routine = null;
-        }
-
-        private IEnumerator PlaceWallEndPoint_Routine()
-        {
-            while (true)
-            {
-                _pointVisualObject.transform.position = _hoverPoint;
-
-                if(_newWall != null)
-                {
-                    _newWall.SetEndPoint(_hoverPoint);
-                }
-
-                if(_currentHoveredWall != null)
-                {
-                    _newWall.SetEndPoint(_currentHoveredWall.GetClosestCenterPoint(_hoverPoint));
-                }
-
-                yield return null;
-            }
-        }
-
 
     }
 }
