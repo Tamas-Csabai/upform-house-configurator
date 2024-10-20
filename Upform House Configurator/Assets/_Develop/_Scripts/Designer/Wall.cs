@@ -14,6 +14,8 @@ namespace Upform.Designer
         [SerializeField] private MeshFilter meshFilter;
 
         [Header("Points")]
+        [SerializeField] private Transform startPoint;
+        [SerializeField] private Transform endPoint;
         [SerializeField] private Transform bottomLeftPoint;
         [SerializeField] private Transform bottomRightPoint;
         [SerializeField] private Transform topLeftPoint;
@@ -75,20 +77,30 @@ namespace Upform.Designer
 
         public void Move(Vector3 position)
         {
+            position.y = transform.position.y;
+
             transform.position = position;
-
-            RecalculateMesh();
-
-            UpdateMeshCollider();
         }
 
-        public void SetEndPoint(Vector3 endPoint)
+        public void SetEndPoint(Vector3 endPosition)
         {
+            endPosition.y = endPoint.position.y;
+
+            endPoint.position = endPosition;
+
+            Vector3 distance = endPoint.position - startPoint.position;
+
+            Vector3 direction = distance.normalized;
+
+            Vector3 cross = Vector3.Cross(direction, Vector3.up);
+
             float offsetZ = _thickness / 2f;
 
-            topRightPoint.position = endPoint;
+            topRightPoint.position = endPoint.position + (cross * offsetZ);
+            bottomRightPoint.position = endPoint.position - (cross * offsetZ);
 
-            bottomRightPoint.position = endPoint;
+            topLeftPoint.position = startPoint.position + (cross * offsetZ);
+            bottomLeftPoint.position = startPoint.position - (cross * offsetZ);
 
             RecalculateMesh();
         }

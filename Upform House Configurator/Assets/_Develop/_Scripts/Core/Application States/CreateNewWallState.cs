@@ -14,12 +14,12 @@ namespace Upform.Core
         [SerializeField] private StateSO hasSelectionStateSO;
         [SerializeField] private GameObject pointVisualObjectPrefab;
         [SerializeField] private Wall newWallPrefab;
+        [SerializeField] private Transform wallsParent;
         [SerializeField] private Interactable designerSheetInteractable;
 
         private Coroutine _placeWallEndPoint_Routine;
         private bool _isStartPointPlaced = false;
         private Vector3 _wallStartPoint;
-        private Vector3 _wallEndPoint;
         private Vector3 _hoverPoint;
 
         private GameObject _pointVisualObject;
@@ -44,7 +44,6 @@ namespace Upform.Core
             _newWall = null;
             _isStartPointPlaced = false;
             _wallStartPoint = Vector3.zero;
-            _wallEndPoint = Vector3.zero;
 
             StartPlaceWallEndPoint();
         }
@@ -81,7 +80,9 @@ namespace Upform.Core
             }
             else
             {
-                _wallEndPoint = interactionHit.Point;
+                _newWall.SetEndPoint(interactionHit.Point);
+
+                _newWall.UpdateMeshCollider();
 
                 Selectable newWallSelectable = _newWall.GetComponent<Selectable>();
 
@@ -94,8 +95,10 @@ namespace Upform.Core
         private Wall CreateNewWall()
         {
             Wall newWall = Instantiate(newWallPrefab);
+            newWall.transform.SetParent(wallsParent, true);
+            newWall.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 
-            newWall.transform.position = _wallStartPoint;
+            newWall.Move(_wallStartPoint);
 
             return newWall;
         }

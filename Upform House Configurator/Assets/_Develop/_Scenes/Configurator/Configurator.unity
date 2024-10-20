@@ -468,6 +468,7 @@ MonoBehaviour:
   hasSelectionStateSO: {fileID: 11400000, guid: e43ed1634f3d8b24aac6dc06c779a8a5, type: 2}
   pointVisualObjectPrefab: {fileID: 7492165507354091855, guid: e2bba831f9cf37f419656612350b6446, type: 3}
   newWallPrefab: {fileID: 7795518757293534342, guid: 36702218faf72e442adb056a3dd85486, type: 3}
+  wallsParent: {fileID: 1269213350}
   designerSheetInteractable: {fileID: 1123537021}
 --- !u!1 &410087039
 GameObject:
