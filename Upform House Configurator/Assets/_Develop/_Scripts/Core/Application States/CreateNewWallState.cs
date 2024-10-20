@@ -18,7 +18,6 @@ namespace Upform.Core
         [SerializeField] private Wall newWallPrefab;
         [SerializeField] private Transform wallsParent;
 
-        private Coroutine _placeWallEndPoint_Routine;
         private bool _isStartPointPlaced = false;
         private Vector3 _wallStartPoint;
         private Wall _currentHoveredWall;
