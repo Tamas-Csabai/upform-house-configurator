@@ -8,8 +8,11 @@ namespace Upform.Core
     public abstract class Entity : MonoBehaviour
     {
 
-        [SerializeField] private Interactable interactable;
-        [SerializeField] private Selectable selectable;
+        [SerializeField] protected Interactable interactable;
+        [SerializeField] protected Selectable selectable;
+
+        public Interactable Interactable => interactable;
+        public Selectable Selectable => selectable;
 
         private void Awake()
         {

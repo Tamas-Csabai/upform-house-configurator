@@ -29,6 +29,15 @@ namespace Upform.Designer
         public Point StartPoint => startPoint;
         public Point EndPoint => endPoint;
 
+        public Vector3 Perpendicular
+        {
+            get
+            {
+                Vector3 cross = Vector3.Cross((EndPoint.transform.position - StartPoint.transform.position).normalized, Vector3.up);
+                return Vector3.ProjectOnPlane(cross, Vector3.up);
+            }
+        }
+
         public float Length
         {
             get => _length;
