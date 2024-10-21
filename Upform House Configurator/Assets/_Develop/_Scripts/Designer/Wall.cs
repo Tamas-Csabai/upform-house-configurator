@@ -1,9 +1,10 @@
 
 using UnityEngine;
+using Upform.Core;
 
 namespace Upform.Designer
 {
-    public class Wall : MonoBehaviour
+    public class Wall : EntityComponent
     {
 
         [Header("Resources")]
@@ -14,8 +15,8 @@ namespace Upform.Designer
         [SerializeField] private MeshFilter meshFilter;
 
         [Header("Points")]
-        [SerializeField] private Transform startPoint;
-        [SerializeField] private Transform endPoint;
+        [SerializeField] private Point startPoint;
+        [SerializeField] private Point endPoint;
         [SerializeField] private Transform bottomLeftPoint;
         [SerializeField] private Transform bottomRightPoint;
         [SerializeField] private Transform topLeftPoint;
@@ -24,6 +25,9 @@ namespace Upform.Designer
         private Mesh _mesh;
         private float _length;
         private float _thickness;
+
+        public Point StartPoint => startPoint;
+        public Point EndPoint => endPoint;
 
         public float Length
         {
@@ -82,13 +86,19 @@ namespace Upform.Designer
             transform.position = position;
         }
 
-        public void SetEndPoint(Vector3 endPosition)
+        public void SetActiveEndPoints(bool enabled)
         {
-            endPosition.y = endPoint.position.y;
+            startPoint.gameObject.SetActive(enabled);
+            endPoint.gameObject.SetActive(enabled);
+        }
 
-            endPoint.position = endPosition;
+        public void SetEndPointPosition(Vector3 endPosition)
+        {
+            endPosition.y = endPoint.transform.position.y;
 
-            Vector3 distance = endPoint.position - startPoint.position;
+            endPoint.transform.position = endPosition;
+
+            Vector3 distance = endPoint.transform.position - startPoint.transform.position;
 
             Vector3 direction = distance.normalized;
 
@@ -96,11 +106,11 @@ namespace Upform.Designer
 
             float offsetZ = _thickness / 2f;
 
-            topRightPoint.position = endPoint.position + (cross * offsetZ);
-            bottomRightPoint.position = endPoint.position - (cross * offsetZ);
+            topRightPoint.position = endPoint.transform.position + (cross * offsetZ);
+            bottomRightPoint.position = endPoint.transform.position - (cross * offsetZ);
 
-            topLeftPoint.position = startPoint.position + (cross * offsetZ);
-            bottomLeftPoint.position = startPoint.position - (cross * offsetZ);
+            topLeftPoint.position = startPoint.transform.position + (cross * offsetZ);
+            bottomLeftPoint.position = startPoint.transform.position - (cross * offsetZ);
 
             RecalculateMesh();
         }
@@ -120,8 +130,8 @@ namespace Upform.Designer
 
         public Vector3 GetClosestCenterPoint(Vector3 position)
         {
-            Vector2 start = new Vector2(startPoint.position.x, startPoint.position.z);
-            Vector2 end = new Vector2(endPoint.position.x, endPoint.position.z);
+            Vector2 start = new Vector2(startPoint.transform.position.x, startPoint.transform.position.z);
+            Vector2 end = new Vector2(endPoint.transform.position.x, endPoint.transform.position.z);
             Vector2 point = new Vector2(position.x, position.z);
 
             Vector2 pointOnLine = FindNearestPointOnLine(start, end, point);

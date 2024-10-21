@@ -214,7 +214,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &112317799
 Transform:
   m_ObjectHideFlags: 0
@@ -345,7 +345,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0.7490196, b: 1, a: 1}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -424,8 +424,8 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
-  m_Antialiasing: 0
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 1
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -548,7 +548,7 @@ MonoBehaviour:
   evaluationRate: 0
   hasSelectionStateSO: {fileID: 11400000, guid: e43ed1634f3d8b24aac6dc06c779a8a5, type: 2}
   pointVisualObjectPrefab: {fileID: 7492165507354091855, guid: e2bba831f9cf37f419656612350b6446, type: 3}
-  confirmPointObjectPrefab: {fileID: 7492165507354091855, guid: d737f4f2662bc954da71fc9e491d64e6, type: 3}
+  confirmPointVisualPrefab: {fileID: 7492165507354091855, guid: d737f4f2662bc954da71fc9e491d64e6, type: 3}
   newWallPrefab: {fileID: 7795518757293534342, guid: 36702218faf72e442adb056a3dd85486, type: 3}
   wallsParent: {fileID: 1269213350}
 --- !u!114 &360047901
@@ -568,7 +568,7 @@ MonoBehaviour:
   evaluationRate: 0
   hasSelectionStateSO: {fileID: 11400000, guid: e43ed1634f3d8b24aac6dc06c779a8a5, type: 2}
   pointVisualObjectPrefab: {fileID: 7492165507354091855, guid: e2bba831f9cf37f419656612350b6446, type: 3}
-  confirmPointObjectPrefab: {fileID: 7492165507354091855, guid: d737f4f2662bc954da71fc9e491d64e6, type: 3}
+  confirmPointVisualPrefab: {fileID: 7492165507354091855, guid: d737f4f2662bc954da71fc9e491d64e6, type: 3}
   newWallPrefab: {fileID: 7795518757293534342, guid: b66914d2979c3334f88b17bcd41d9504, type: 3}
   wallsParent: {fileID: 1269213350}
 --- !u!1 &410087039
@@ -1423,6 +1423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbc7bf0e33e245e41b77cf0d8a14e794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  layer: 1
 --- !u!1 &1269213349
 GameObject:
   m_ObjectHideFlags: 0

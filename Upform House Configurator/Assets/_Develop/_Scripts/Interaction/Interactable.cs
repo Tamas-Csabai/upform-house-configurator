@@ -6,6 +6,8 @@ namespace Upform.Interaction
     public class Interactable : MonoBehaviour
     {
 
+        [SerializeField] private InteractionLayer layer = InteractionLayer.Default;
+
         private bool _isEnabled = true;
         private bool _isLeftClickInside = false;
         private bool _isRightClickInside = false;
@@ -24,6 +26,8 @@ namespace Upform.Interaction
 
         public event System.Action OnEnabled;
         public event System.Action OnDisabled;
+
+        public InteractionLayer Layer => layer;
 
         public Collider Collider { get; private set; }
 
@@ -74,6 +78,11 @@ namespace Upform.Interaction
             _isRightClickInside = false;
 
             OnDisabled?.Invoke();
+        }
+
+        public bool HasLayer(InteractionLayer interactionLayer)
+        {
+            return (layer & interactionLayer) == interactionLayer;
         }
 
         public void HoverEnter(InteractionHit interactionHit)
