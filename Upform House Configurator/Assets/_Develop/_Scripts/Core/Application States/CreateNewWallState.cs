@@ -163,7 +163,6 @@ namespace Upform.Core
             }
             else
             {
-                Debug.Log("new wall");
                 Vector3 hitPoint = new Vector3(interactionHit.Point.x, wallsParent.position.y, interactionHit.Point.z);
 
                 _newWall.SetEndPointPosition(interactionHit.Point);
@@ -208,8 +207,6 @@ namespace Upform.Core
             {
                 return;
             }
-
-            Debug.Log("confirm");
 
             if (_prevWall != null && _currentSnapPoint == _prevWall.EndPoint)
             {
