@@ -8,13 +8,13 @@ using Upform.Designer;
 
 namespace Upform.Core
 {
-    public class HasSelectionState : StateBase
+    public class HasSelection_State : StateBase
     {
 
         [SerializeField] private StateSO emptySelectionStateSO;
 
         private Coroutine _moveCurrentSelectable_Routine;
-        private Wall _currentWall;
+        private RectangleLine _currentWall;
         private Selectable _currentSelectable;
         private Interactable _currentInteractable;
         private Vector3 _hoverPosition;
@@ -73,11 +73,6 @@ namespace Upform.Core
             }
         }
 
-        public override void Evaluate()
-        {
-            
-        }
-
         public override void OnExiting()
         {
             SelectionManager.OnMainSelectionChanged -= MainSelectionChanged;
@@ -100,7 +95,7 @@ namespace Upform.Core
 
             _currentSelectable = selectable;
 
-            _currentWall = _currentSelectable.GetComponent<Wall>();
+            _currentWall = _currentSelectable.GetComponent<RectangleLine>();
 
             if (_currentInteractable != null)
             {

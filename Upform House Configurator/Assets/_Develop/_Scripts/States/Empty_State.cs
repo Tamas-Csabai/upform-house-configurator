@@ -1,13 +1,8 @@
 
 namespace Upform.States
 {
-    public class EmptyState : StateBase
+    public class Empty_State : StateBase
     {
-        public override void Evaluate()
-        {
-            
-        }
-
         public override void OnEntering()
         {
             

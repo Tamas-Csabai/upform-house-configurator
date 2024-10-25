@@ -5,7 +5,7 @@ namespace Upform.Interaction
     public enum InteractionLayer
     {
         Default = 1,
-        Point = 2,
+        Intersection = 2,
         Wall = 4
     }
 }

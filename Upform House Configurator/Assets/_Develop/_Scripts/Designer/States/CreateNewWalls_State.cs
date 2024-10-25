@@ -1,34 +1,41 @@
 
 using UnityEngine;
-using Upform.Designer;
 using Upform.Interaction;
 using Upform.Selection;
 using Upform.States;
 
-namespace Upform.Core
+namespace Upform.Designer
 {
-    public class CreateNewWallState : StateBase
+    public class CreateNewWalls_State : StateBase
     {
 
         [SerializeField] private StateSO hasSelectionStateSO;
+        [SerializeField] private Graph graph;
+        [SerializeField] private StateMachine stateMachine;
         [SerializeField] private GameObject pointVisualObjectPrefab;
         [SerializeField] private GameObject confirmPointVisualPrefab;
-        [SerializeField] private Wall newWallPrefab;
+        [SerializeField] private RectangleLine newWallPrefab;
         [SerializeField] private Transform wallsParent;
 
-        private bool _isStartPointPlaced = false;
         private Vector3 _wallStartPoint;
-        private Wall _currentHoveredWall;
+        private bool _isStartPointPlaced;
+
+        private RectangleLine _currentHoveredWall;
+        private RectangleLine _newWall;
+        private RectangleLine _prevWall;
 
         private GameObject _pointVisualObject;
         private GameObject _confirmPointVisual;
+
         private Point _currentSnapPoint;
         private Point _prevSnapPoint;
-        private Wall _newWall;
-        private Wall _prevWall;
+
+        private Node _selectedNode;
+        private Node _prevSelectedNode;
 
         public override void OnEntering()
         {
+            /*
             if(_pointVisualObject == null)
             {
                 _pointVisualObject = Instantiate(pointVisualObjectPrefab);
@@ -48,38 +55,46 @@ namespace Upform.Core
             SelectionManager.ClearSelection();
 
             SetCurrentSnapPoint(null);
+            _prevSnapPoint = null;
+
             _currentHoveredWall = null;
             _prevWall = null;
             _newWall = null;
-            _isStartPointPlaced = false;
+
             _wallStartPoint = Vector3.zero;
+
+            _selectedNode = null;
+            _prevSelectedNode = null;
 
             InteractionManager.OnInteract += Interact;
             InteractionManager.OnHovering += Hovering;
             InteractionManager.OnHoverEnter += HoverEnter;
             InteractionManager.OnHoverExit += HoverExit;
-        }
-
-        public override void Evaluate()
-        {
-
+            */
+            stateMachine.EnterDefaultState();
         }
 
         public override void OnExiting()
         {
+            /*
             _pointVisualObject.SetActive(false);
+
+            SetCurrentSnapPoint(null);
+            _prevSnapPoint = null;
 
             InteractionManager.OnInteract -= Interact;
             InteractionManager.OnHovering -= Hovering;
             InteractionManager.OnHoverEnter -= HoverEnter;
             InteractionManager.OnHoverExit -= HoverExit;
+            */
         }
 
         private void HoverEnter(InteractionHit interactionHit)
         {
+            /*
             if(interactionHit.Interactable.HasLayer(InteractionLayer.Wall))
             {
-                if(interactionHit.Interactable.TryGetComponent(out Wall wall))
+                if(interactionHit.Interactable.TryGetComponent(out RectangleLine wall))
                 {
                     if (wall != _newWall)
                     {
@@ -87,20 +102,21 @@ namespace Upform.Core
                     }
                 }
             }
-            else if (interactionHit.Interactable.HasLayer(InteractionLayer.Point))
+            else if (interactionHit.Interactable.HasLayer(InteractionLayer.Intersection))
             {
                 if (interactionHit.Interactable.TryGetComponent(out Point point))
                 {
-                    if(_newWall == null || _newWall.Entity != point.Entity)
+                    if(_newWall == null)
                     {
                         SetCurrentSnapPoint(point);
                     }
                 }
-            }
+            }*/
         }
 
         private void HoverExit(InteractionHit interactionHit)
         {
+            /*
             if (interactionHit.Interactable == null)
             {
                 _currentHoveredWall = null;
@@ -112,7 +128,7 @@ namespace Upform.Core
                 SetCurrentSnapPoint(_prevSnapPoint);
             }
 
-            if (interactionHit.Interactable.TryGetComponent(out Wall wall))
+            if (interactionHit.Interactable.TryGetComponent(out RectangleLine wall))
             {
                 if (wall != _newWall)
                 {
@@ -122,11 +138,12 @@ namespace Upform.Core
             else
             {
                 _currentHoveredWall = null;
-            }
+            }*/
         }
 
         private void Hovering(InteractionHit interactionHit)
         {
+            /*
             if (_newWall != null)
             {
                 if(_currentSnapPoint != null)
@@ -149,10 +166,12 @@ namespace Upform.Core
             {
                 _pointVisualObject.transform.position = interactionHit.Point;
             }
+            */
         }
 
         private void Interact(InteractionHit interactionHit)
         {
+            /*
             if (!_isStartPointPlaced)
             {
                 _wallStartPoint = interactionHit.Point;
@@ -169,7 +188,6 @@ namespace Upform.Core
                 _newWall.UpdateMeshCollider();
                 _newWall.SetActiveEndPoints(true);
 
-                SetCurrentSnapPoint(_newWall.EndPoint);
 
                 _prevWall = _newWall;
 
@@ -177,13 +195,15 @@ namespace Upform.Core
 
                 _newWall = CreateNewWall();
             }
+            */
         }
 
         private void SetCurrentSnapPoint(Point point)
         {
+            /*
             if(_currentSnapPoint != null)
             {
-                _currentSnapPoint.Interactable.OnInteract -= Confirm;
+                //_currentSnapPoint.Interactable.OnInteract -= Confirm;
             }
 
             _prevSnapPoint = _currentSnapPoint;
@@ -191,24 +211,25 @@ namespace Upform.Core
 
             if (_currentSnapPoint != null)
             {
-                _currentSnapPoint.Interactable.OnInteract += Confirm;
+                //_currentSnapPoint.Interactable.OnInteract += Confirm;
                 _confirmPointVisual.transform.position = _currentSnapPoint.transform.position;
                 _confirmPointVisual.gameObject.SetActive(true);
             }
             else
             {
                 _confirmPointVisual.gameObject.SetActive(false);
-            }
+            }*/
         }
 
         private void Confirm()
         {
+            /*
             if (!_isStartPointPlaced)
             {
                 return;
             }
 
-            if (_prevWall != null && _currentSnapPoint == _prevWall.EndPoint)
+            if (_prevWall != null)
             {
                 Destroy(_newWall.gameObject);
 
@@ -228,12 +249,12 @@ namespace Upform.Core
 
             SetCurrentSnapPoint(null);
 
-            Exit(hasSelectionStateSO);
+            Exit(hasSelectionStateSO);*/
         }
 
-        private Wall CreateNewWall()
+        private RectangleLine CreateNewWall()
         {
-            Wall newWall = Instantiate(newWallPrefab);
+            RectangleLine newWall = Instantiate(newWallPrefab);
 
             newWall.transform.SetParent(wallsParent, true);
             newWall.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);

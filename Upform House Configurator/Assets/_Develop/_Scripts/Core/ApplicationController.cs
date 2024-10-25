@@ -16,14 +16,14 @@ namespace Upform.Core
 
         private void Start()
         {
-            InteractionManager.StartAllInteractor();
-
             stateMachine.EnterDefaultState();
         }
 
         private void Update()
         {
             InputManager.Poll();
+
+            InteractionManager.FetchInteractions();
         }
 
 #if UNITY_EDITOR

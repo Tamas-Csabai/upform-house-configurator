@@ -7,7 +7,6 @@ namespace Upform.Interaction
     {
 
         private static HashSet<Interactor> _interactors = new();
-        private static bool _isStarted = false;
 
         public static event System.Action<InteractionHit> OnInteract;
         public static event System.Action<InteractionHit> OnAction;
@@ -24,11 +23,6 @@ namespace Upform.Interaction
             interactor.OnHoverExit += InteractorHoverExit;
 
             _interactors.Add(interactor);
-
-            if(_isStarted)
-            {
-                interactor.StartInteract();
-            }
         }
 
         public static void Unsubscribe(Interactor interactor)
@@ -40,27 +34,13 @@ namespace Upform.Interaction
             interactor.OnHoverExit -= InteractorHoverExit;
 
             _interactors.Remove(interactor);
-
-            interactor.StopInteract();
         }
 
-        public static void StartAllInteractor()
+        public static void FetchInteractions()
         {
-            _isStarted = true;
-
             foreach (Interactor interactor in _interactors)
             {
-                interactor.StartInteract();
-            }
-        }
-
-        public static void StopAllInteractor()
-        {
-            _isStarted = false;
-
-            foreach (Interactor interactor in _interactors)
-            {
-                interactor.StopInteract();
+                interactor.FetchInteraction();
             }
         }
 

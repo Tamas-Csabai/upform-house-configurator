@@ -1,5 +1,4 @@
 using Upform.Input;
-using System.Collections;
 using UnityEngine;
 
 namespace Upform.Interaction
@@ -7,7 +6,6 @@ namespace Upform.Interaction
     public abstract class Interactor : MonoBehaviour
     {
 
-        private Coroutine _interactRoutine;
         private InteractionHit _currentInteractionHit;
         private Interactable _currentInteractable;
 
@@ -41,59 +39,34 @@ namespace Upform.Interaction
             InteractionManager.Unsubscribe(this);
         }
 
-        public void StartInteract()
+        public void FetchInteraction()
         {
-            if(_interactRoutine != null)
+            _currentInteractionHit = Interact();
+
+            if (_currentInteractionHit.HasHit && _currentInteractionHit.Interactable != null)
             {
-                StopCoroutine(_interactRoutine);
-            }
-
-            _interactRoutine = StartCoroutine(Interact_Routine());
-        }
-
-        public void StopInteract()
-        {
-            if (_interactRoutine != null)
-            {
-                StopCoroutine(_interactRoutine);
-            }
-
-            _interactRoutine = null;
-        }
-
-        protected IEnumerator Interact_Routine()
-        {
-            while (enabled)
-            {
-                _currentInteractionHit = Interact();
-
-                if (_currentInteractionHit.HasHit && _currentInteractionHit.Interactable != null)
+                if (_currentInteractionHit.Interactable != _currentInteractable)
                 {
-                    if (_currentInteractionHit.Interactable != _currentInteractable)
-                    {
-                        if(_currentInteractable != null)
-                        {
-                            HoverExit();
-                        }
-
-                        _currentInteractable = _currentInteractionHit.Interactable;
-
-                        HoverEnter();
-                    }
-
-                    Hovering();
-                }
-                else
-                {
-                    if(_currentInteractable != null)
+                    if (_currentInteractable != null)
                     {
                         HoverExit();
-
-                        _currentInteractable = null;
                     }
+
+                    _currentInteractable = _currentInteractionHit.Interactable;
+
+                    HoverEnter();
                 }
 
-                yield return null;
+                Hovering();
+            }
+            else
+            {
+                if (_currentInteractable != null)
+                {
+                    HoverExit();
+
+                    _currentInteractable = null;
+                }
             }
         }
 

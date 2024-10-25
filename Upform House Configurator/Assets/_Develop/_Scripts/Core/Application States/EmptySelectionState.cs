@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Upform.Core
 {
-    public class EmptySelectionState : StateBase
+    public class EmptySelection_State : StateBase
     {
 
         [SerializeField] private StateSO hasSelectionStateSO;
@@ -12,11 +12,6 @@ namespace Upform.Core
         public override void OnEntering()
         {
             SelectionManager.OnMainSelectionChanged += MainSelectionChanged;
-        }
-
-        public override void Evaluate()
-        {
-            
         }
 
         public override void OnExiting()

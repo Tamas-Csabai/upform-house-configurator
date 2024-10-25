@@ -1,18 +1,13 @@
 using TMPro;
 using UnityEngine;
-using Upform.Core;
-using Upform.Interaction;
 
 namespace Upform.Designer
 {
-    public class Point : EntityComponent
+    public class Point : MonoBehaviour
     {
 
-        [SerializeField] private Interactable interactable;
         [SerializeField] private TextMeshPro textMeshPro;
         [SerializeField] private MeshRenderer meshRenderer;
-
-        public Interactable Interactable => interactable;
 
         public void ShowPoint()
         {
