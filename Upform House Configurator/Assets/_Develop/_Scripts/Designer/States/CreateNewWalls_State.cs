@@ -28,7 +28,7 @@ namespace Upform.Designer
             intersectionCreator.OnNewIntersection += NewIntersection;
             intersectionCreator.OnIntersectionSelected += IntersectionSelected;
             intersectionCreator.OnNewIntersectionOnWall += NewIntersectionOnWall;
-            intersectionCreator.StartInteraction();
+            intersectionCreator.StartInteraction(wallSO);
         }
 
         public override void OnExiting()
@@ -89,7 +89,7 @@ namespace Upform.Designer
             Edge newEdge = graph.ConnectNodes(_startIntersection.Node, _endIntersection.Node);
 
             _newWall = newEdge.GetComponent<Wall>();
-            //_newWall.WallSO = wallSO;
+            _newWall.WallSO = wallSO;
 
             _startIntersection = _endIntersection;
         }

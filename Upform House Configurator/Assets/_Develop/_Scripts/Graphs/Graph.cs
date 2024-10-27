@@ -54,13 +54,15 @@ namespace Upform.Graphs
             return edge;
         }
 
-        public void InsertNode(Node node, Edge edge)
+        public Edge InsertNode(Node node, Edge edge)
         {
             Edge newEdge = ConnectNodes(edge.StartNode, node);
             _edges.Add(newEdge);
 
             edge.StartNode = node;
             node.AddEdge(edge);
+
+            return newEdge;
         }
 
     }

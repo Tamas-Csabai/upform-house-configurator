@@ -9,41 +9,48 @@ namespace Upform.Designer
     {
 
         [SerializeField] private float verticalOffset = 0.1f;
-        [SerializeField] private GameObject pointVisualObjectPrefab;
-        [SerializeField] private GameObject confirmVisualObjectPrefab;
+        [SerializeField] private Point newIntersectionVisualPointPrefab;
+        [SerializeField] private Point confirmVisualPointPrefab;
         [SerializeField] private Graph graph;
 
         private Vector3 _newIntersectionPosition;
         private bool _hasSnapPoint;
-        private GameObject _pointVisualObject;
-        private GameObject _confirmVisualObject;
+        private Point _newIntersectionVisualPoint;
+        private Point _confirmVisualPoint;
         private Intersection _currentIntersection;
         private Wall _currentHoveredWall;
+        private WallSO _wallSO;
 
         public event System.Action<Intersection> OnNewIntersection;
         public event System.Action<Intersection> OnIntersectionSelected;
         public event System.Action<Intersection, Wall> OnNewIntersectionOnWall;
 
-        public void StartInteraction()
+        public void StartInteraction(WallSO wallSO)
         {
-            if (_pointVisualObject == null)
+            if (_newIntersectionVisualPoint == null)
             {
-                _pointVisualObject = Instantiate(pointVisualObjectPrefab);
-                _pointVisualObject.transform.SetParent(transform, true);
-                _pointVisualObject.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                _newIntersectionVisualPoint = Instantiate(newIntersectionVisualPointPrefab);
+                _newIntersectionVisualPoint.transform.SetParent(transform, true);
+                _newIntersectionVisualPoint.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             }
 
-            if (_confirmVisualObject == null)
+            if (_confirmVisualPoint == null)
             {
-                _confirmVisualObject = Instantiate(confirmVisualObjectPrefab);
-                _confirmVisualObject.transform.SetParent(transform, true);
-                _confirmVisualObject.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                _confirmVisualPoint = Instantiate(confirmVisualPointPrefab);
+                _confirmVisualPoint.transform.SetParent(transform, true);
+                _confirmVisualPoint.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             }
+
+            _wallSO = wallSO;
 
             _newIntersectionPosition = Vector3.zero;
             _hasSnapPoint = false;
-            _pointVisualObject.SetActive(true);
-            _confirmVisualObject.SetActive(false);
+
+            _newIntersectionVisualPoint.gameObject.SetActive(true);
+            _newIntersectionVisualPoint.SetSize(_wallSO.Thickness);
+
+            _confirmVisualPoint.gameObject.SetActive(false);
+            _confirmVisualPoint.SetSize(_wallSO.Thickness);
 
             _currentHoveredWall = null;
             _currentIntersection = null;
@@ -61,8 +68,8 @@ namespace Upform.Designer
             InteractionManager.OnHoverEnter -= HoverEnter;
             InteractionManager.OnHoverExit -= HoverExit;
 
-            _pointVisualObject.SetActive(false);
-            _confirmVisualObject.SetActive(false);
+            _newIntersectionVisualPoint.gameObject.SetActive(false);
+            _confirmVisualPoint.gameObject.SetActive(false);
         }
 
         private void Interact(InteractionHit interactionHit)
@@ -72,10 +79,14 @@ namespace Upform.Designer
                 Node newNode = graph.AddNewNode(_newIntersectionPosition);
 
                 _currentIntersection = newNode.GetComponent<Intersection>();
+                _currentIntersection.WallSO = _wallSO;
 
                 if (_currentHoveredWall != null)
                 {
-                    graph.InsertNode(newNode, _currentHoveredWall.Edge);
+                    Edge newEdge = graph.InsertNode(newNode, _currentHoveredWall.Edge);
+
+                    Wall newWall = newEdge.GetComponent<Wall>();
+                    newWall.WallSO = _currentHoveredWall.WallSO;
 
                     OnNewIntersectionOnWall?.Invoke(_currentIntersection, _currentHoveredWall);
                 }
@@ -102,11 +113,11 @@ namespace Upform.Designer
                 {
                     _newIntersectionPosition = _currentHoveredWall.GetClosestPosition(interactionHit.Point);
 
-                    _confirmVisualObject.transform.position = _newIntersectionPosition;
+                    _confirmVisualPoint.transform.position = _newIntersectionPosition;
                 }
             }
 
-            _pointVisualObject.transform.position = _newIntersectionPosition;
+            _newIntersectionVisualPoint.transform.position = _newIntersectionPosition;
         }
 
         private void HoverEnter(InteractionHit interactionHit)
@@ -121,8 +132,8 @@ namespace Upform.Designer
 
                 _newIntersectionPosition = intersection.transform.position;
 
-                _confirmVisualObject.transform.position = _newIntersectionPosition;
-                _confirmVisualObject.SetActive(true);
+                _confirmVisualPoint.transform.position = _newIntersectionPosition;
+                _confirmVisualPoint.gameObject.SetActive(true);
             }
             else if (interactionHit.Interactable.HasLayer(InteractionLayer.Wall))
             {
@@ -130,7 +141,7 @@ namespace Upform.Designer
 
                 _currentHoveredWall = interactionHit.Interactable.GetComponent<Wall>();
 
-                _confirmVisualObject.SetActive(true);
+                _confirmVisualPoint.gameObject.SetActive(true);
             }
         }
 
@@ -142,7 +153,7 @@ namespace Upform.Designer
 
             _currentHoveredWall = null;
 
-            _confirmVisualObject.SetActive(false);
+            _confirmVisualPoint.gameObject.SetActive(false);
         }
 
     }

@@ -544,6 +544,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateSO: {fileID: 11400000, guid: 312502f6c7d1f194f804e40f8002ead0, type: 2}
   hasSelectionStateSO: {fileID: 11400000, guid: e43ed1634f3d8b24aac6dc06c779a8a5, type: 2}
+  wallSO: {fileID: 11400000, guid: 3fb655a5cc3224f448af905a364db75c, type: 2}
   graph: {fileID: 53405299}
   intersectionCreator: {fileID: 1123537023}
 --- !u!114 &360047901
@@ -1378,7 +1379,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ef0254ea28f2946a5e087736c2cf06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointVisualObjectPrefab: {fileID: 7492165507354091855, guid: e2bba831f9cf37f419656612350b6446, type: 3}
+  verticalOffset: 0.1
+  newIntersectionVisualPointPrefab: {fileID: 382273501648238114, guid: de7cc38e912673644a706aaf85c4f4f7, type: 3}
+  confirmVisualPointPrefab: {fileID: 382273501648238114, guid: d737f4f2662bc954da71fc9e491d64e6, type: 3}
   graph: {fileID: 53405299}
 --- !u!1 &1127509303
 GameObject:

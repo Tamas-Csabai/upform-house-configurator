@@ -43,23 +43,7 @@ namespace Upform.Designer
             {
                 _thickness = value;
 
-                float offsetZ = _thickness / 2f;
-
-                Vector3 bottomLeft = bottomLeftPoint.localPosition;
-                bottomLeft.z = -offsetZ;
-                bottomLeftPoint.transform.localPosition = bottomLeft;
-
-                Vector3 bottomRight = bottomRightPoint.localPosition;
-                bottomRight.z = -offsetZ;
-                bottomRightPoint.transform.localPosition = bottomRight;
-
-                Vector3 topLeft = topLeftPoint.localPosition;
-                topLeft.z = offsetZ;
-                topLeftPoint.localPosition = topLeft;
-
-                Vector3 topRight = topRightPoint.localPosition;
-                topRight.z = offsetZ;
-                topRightPoint.localPosition = topRight;
+                UpdateEndPoints();
 
                 RecalculateMesh();
             }
