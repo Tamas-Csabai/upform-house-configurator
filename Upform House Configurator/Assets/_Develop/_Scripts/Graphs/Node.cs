@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Upform.Designer
+namespace Upform.Graphs
 {
     public class Node : MonoBehaviour
     {
@@ -33,7 +33,7 @@ namespace Upform.Designer
 
             foreach(Edge edge in _edges)
             {
-                edge.NodeMoved();
+                edge.NodeMoved(this);
             }
         }
     }

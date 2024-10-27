@@ -5,8 +5,10 @@ namespace Upform
     public static class MeshBuilder
     {
 
-        public static void CreateQuadForMesh(ref Mesh mesh, Vector3 a, Vector3 b, Vector3 c, Vector3 d)
+        public static Mesh CreateNewQuad(Vector3 a, Vector3 b, Vector3 c, Vector3 d)
         {
+            Mesh mesh = new Mesh();
+
             Vector3[] vertices = new Vector3[4]
             {
                 a,
@@ -44,6 +46,21 @@ namespace Upform
             };
 
             mesh.uv = uv;
+
+            return mesh;
+        }
+
+        public static void SetQuadVertices(ref Mesh mesh, Vector3 a, Vector3 b, Vector3 c, Vector3 d)
+        {
+            Vector3[] vertices = new Vector3[4]
+            {
+                a,
+                b,
+                c,
+                d
+            };
+
+            mesh.vertices = vertices;
         }
     }
 }

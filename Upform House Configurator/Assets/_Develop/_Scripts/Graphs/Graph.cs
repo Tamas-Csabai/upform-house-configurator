@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Upform.Designer
+namespace Upform.Graphs
 {
-    public class Graph : MonoBehaviour
+    public class Graph : MonoBehaviour 
     {
 
         [SerializeField] private Node nodePrefab;
@@ -13,7 +13,6 @@ namespace Upform.Designer
 
         private HashSet<Node> _nodes = new();
         private HashSet<Edge> _edges = new();
-
 
         private Node CreateNewNode()
         {

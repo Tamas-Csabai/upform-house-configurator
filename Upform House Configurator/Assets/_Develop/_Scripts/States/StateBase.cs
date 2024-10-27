@@ -5,7 +5,7 @@ namespace Upform.States
     public abstract class StateBase : MonoBehaviour
     {
 
-        [SerializeField] private StateSO stateSO;
+        [SerializeField] protected StateSO stateSO;
 
         public event System.Action<StateSO> OnExit;
 

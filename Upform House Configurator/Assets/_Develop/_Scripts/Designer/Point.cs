@@ -9,6 +9,11 @@ namespace Upform.Designer
         [SerializeField] private TextMeshPro textMeshPro;
         [SerializeField] private MeshRenderer meshRenderer;
 
+        public void SetSize(float size)
+        {
+            meshRenderer.transform.localScale = size * Vector3.one;
+        }
+
         public void ShowPoint()
         {
             meshRenderer.enabled = true;

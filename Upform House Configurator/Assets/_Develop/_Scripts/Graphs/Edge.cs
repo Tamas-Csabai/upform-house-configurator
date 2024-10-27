@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Upform.Designer
+namespace Upform.Graphs
 {
     public class Edge : MonoBehaviour
     {
@@ -8,9 +8,9 @@ namespace Upform.Designer
         private Node _startNode;
         private Node _endNode;
 
-        public event System.Action OnStartNodeChanged;
-        public event System.Action OnEndNodeChanged;
-        public event System.Action OnNodeMoved;
+        public event System.Action<Node> OnStartNodeChanged;
+        public event System.Action<Node> OnEndNodeChanged;
+        public event System.Action<Node> OnNodeMoved;
 
         public Node StartNode
         {
@@ -18,7 +18,7 @@ namespace Upform.Designer
             set
             {
                 _startNode = value;
-                OnStartNodeChanged?.Invoke();
+                OnStartNodeChanged?.Invoke(value);
             }
         }
 
@@ -28,13 +28,13 @@ namespace Upform.Designer
             set
             {
                 _endNode = value;
-                OnEndNodeChanged?.Invoke();
+                OnEndNodeChanged?.Invoke(value);
             }
         }
 
-        public void NodeMoved()
+        public void NodeMoved(Node node)
         {
-            OnNodeMoved?.Invoke();
+            OnNodeMoved?.Invoke(node);
         }
 
     }

@@ -1,6 +1,7 @@
 
+using System;
 using UnityEngine;
-using Upform.Interaction;
+using Upform.Graphs;
 using Upform.Selection;
 using Upform.States;
 
@@ -10,259 +11,97 @@ namespace Upform.Designer
     {
 
         [SerializeField] private StateSO hasSelectionStateSO;
+        [SerializeField] private WallSO wallSO;
         [SerializeField] private Graph graph;
-        [SerializeField] private StateMachine stateMachine;
-        [SerializeField] private GameObject pointVisualObjectPrefab;
-        [SerializeField] private GameObject confirmPointVisualPrefab;
-        [SerializeField] private RectangleLine newWallPrefab;
-        [SerializeField] private Transform wallsParent;
+        [SerializeField] private IntersectionCreator intersectionCreator;
 
-        private Vector3 _wallStartPoint;
-        private bool _isStartPointPlaced;
-
-        private RectangleLine _currentHoveredWall;
-        private RectangleLine _newWall;
-        private RectangleLine _prevWall;
-
-        private GameObject _pointVisualObject;
-        private GameObject _confirmPointVisual;
-
-        private Point _currentSnapPoint;
-        private Point _prevSnapPoint;
-
-        private Node _selectedNode;
-        private Node _prevSelectedNode;
+        private Intersection _startIntersection;
+        private Intersection _endIntersection;
+        private Wall _newWall;
 
         public override void OnEntering()
         {
-            /*
-            if(_pointVisualObject == null)
-            {
-                _pointVisualObject = Instantiate(pointVisualObjectPrefab);
-                _pointVisualObject.transform.SetParent(transform, true);
-                _pointVisualObject.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-            }
-
-            if (_confirmPointVisual == null)
-            {
-                _confirmPointVisual = Instantiate(confirmPointVisualPrefab);
-                _confirmPointVisual.transform.SetParent(transform, true);
-                _confirmPointVisual.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-            }
-
-            _pointVisualObject.SetActive(true);
-
-            SelectionManager.ClearSelection();
-
-            SetCurrentSnapPoint(null);
-            _prevSnapPoint = null;
-
-            _currentHoveredWall = null;
-            _prevWall = null;
+            _startIntersection = null;
+            _endIntersection = null;
             _newWall = null;
 
-            _wallStartPoint = Vector3.zero;
-
-            _selectedNode = null;
-            _prevSelectedNode = null;
-
-            InteractionManager.OnInteract += Interact;
-            InteractionManager.OnHovering += Hovering;
-            InteractionManager.OnHoverEnter += HoverEnter;
-            InteractionManager.OnHoverExit += HoverExit;
-            */
-            stateMachine.EnterDefaultState();
+            intersectionCreator.OnNewIntersection += NewIntersection;
+            intersectionCreator.OnIntersectionSelected += IntersectionSelected;
+            intersectionCreator.OnNewIntersectionOnWall += NewIntersectionOnWall;
+            intersectionCreator.StartInteraction();
         }
 
         public override void OnExiting()
         {
-            /*
-            _pointVisualObject.SetActive(false);
-
-            SetCurrentSnapPoint(null);
-            _prevSnapPoint = null;
-
-            InteractionManager.OnInteract -= Interact;
-            InteractionManager.OnHovering -= Hovering;
-            InteractionManager.OnHoverEnter -= HoverEnter;
-            InteractionManager.OnHoverExit -= HoverExit;
-            */
+            intersectionCreator.StopInteraction();
+            intersectionCreator.OnNewIntersection -= NewIntersection;
+            intersectionCreator.OnIntersectionSelected -= IntersectionSelected;
+            intersectionCreator.OnNewIntersectionOnWall -= NewIntersectionOnWall;
         }
 
-        private void HoverEnter(InteractionHit interactionHit)
+        private void NewIntersection(Intersection intersection)
         {
-            /*
-            if(interactionHit.Interactable.HasLayer(InteractionLayer.Wall))
+            if (_startIntersection == null)
             {
-                if(interactionHit.Interactable.TryGetComponent(out RectangleLine wall))
-                {
-                    if (wall != _newWall)
-                    {
-                        _currentHoveredWall = wall;
-                    }
-                }
-            }
-            else if (interactionHit.Interactable.HasLayer(InteractionLayer.Intersection))
-            {
-                if (interactionHit.Interactable.TryGetComponent(out Point point))
-                {
-                    if(_newWall == null)
-                    {
-                        SetCurrentSnapPoint(point);
-                    }
-                }
-            }*/
-        }
-
-        private void HoverExit(InteractionHit interactionHit)
-        {
-            /*
-            if (interactionHit.Interactable == null)
-            {
-                _currentHoveredWall = null;
-                return;
-            }
-
-            if(_currentSnapPoint != null)
-            {
-                SetCurrentSnapPoint(_prevSnapPoint);
-            }
-
-            if (interactionHit.Interactable.TryGetComponent(out RectangleLine wall))
-            {
-                if (wall != _newWall)
-                {
-                    _currentHoveredWall = wall;
-                }
+                _startIntersection = intersection;
             }
             else
             {
-                _currentHoveredWall = null;
-            }*/
+                ConnectWall(intersection);
+            }
         }
 
-        private void Hovering(InteractionHit interactionHit)
+        private void IntersectionSelected(Intersection intersection)
         {
-            /*
-            if (_newWall != null)
+            if (_startIntersection == null)
             {
-                if(_currentSnapPoint != null)
-                {
-                    _newWall.SetEndPointPosition(_currentSnapPoint.transform.position);
-                }
-                else if (_currentHoveredWall != null)
-                {
-                    Vector3 closestCenterPoint = _currentHoveredWall.GetClosestCenterPoint(interactionHit.Point);
-                    _newWall.SetEndPointPosition(closestCenterPoint);
-                }
-                else
-                {
-                    _newWall.SetEndPointPosition(interactionHit.Point);
-                }
-
-                _pointVisualObject.transform.position = _newWall.EndPoint.transform.position;
+                _startIntersection = intersection;
             }
             else
             {
-                _pointVisualObject.transform.position = interactionHit.Point;
+                if (_startIntersection != intersection)
+                {
+                    ConnectWall(intersection);
+                }
+
+                Confirm();
             }
-            */
         }
 
-        private void Interact(InteractionHit interactionHit)
+        private void NewIntersectionOnWall(Intersection intersection, Wall wall)
         {
-            /*
-            if (!_isStartPointPlaced)
+            if (_startIntersection == null)
             {
-                _wallStartPoint = interactionHit.Point;
-
-                _newWall = CreateNewWall();
-
-                _isStartPointPlaced = true;
+                _startIntersection = intersection;
             }
             else
             {
-                Vector3 hitPoint = new Vector3(interactionHit.Point.x, wallsParent.position.y, interactionHit.Point.z);
+                ConnectWall(intersection);
 
-                _newWall.SetEndPointPosition(interactionHit.Point);
-                _newWall.UpdateMeshCollider();
-                _newWall.SetActiveEndPoints(true);
-
-
-                _prevWall = _newWall;
-
-                _wallStartPoint = interactionHit.Point;
-
-                _newWall = CreateNewWall();
+                Confirm();
             }
-            */
         }
 
-        private void SetCurrentSnapPoint(Point point)
+        private void ConnectWall(Intersection intersection)
         {
-            /*
-            if(_currentSnapPoint != null)
-            {
-                //_currentSnapPoint.Interactable.OnInteract -= Confirm;
-            }
+            _endIntersection = intersection;
 
-            _prevSnapPoint = _currentSnapPoint;
-            _currentSnapPoint = point;
+            Edge newEdge = graph.ConnectNodes(_startIntersection.Node, _endIntersection.Node);
 
-            if (_currentSnapPoint != null)
-            {
-                //_currentSnapPoint.Interactable.OnInteract += Confirm;
-                _confirmPointVisual.transform.position = _currentSnapPoint.transform.position;
-                _confirmPointVisual.gameObject.SetActive(true);
-            }
-            else
-            {
-                _confirmPointVisual.gameObject.SetActive(false);
-            }*/
+            _newWall = newEdge.GetComponent<Wall>();
+            //_newWall.WallSO = wallSO;
+
+            _startIntersection = _endIntersection;
         }
 
         private void Confirm()
         {
-            /*
-            if (!_isStartPointPlaced)
+            if(_newWall != null)
             {
-                return;
+                SelectionManager.SelectOnly(_newWall.Entity.Selectable);
             }
 
-            if (_prevWall != null)
-            {
-                Destroy(_newWall.gameObject);
-
-                Selectable newWallSelectable = _prevWall.GetComponent<Selectable>();
-
-                newWallSelectable.SelectOnly();
-            }
-            else
-            {
-                _newWall.UpdateMeshCollider();
-                _newWall.SetActiveEndPoints(true);
-
-                Selectable newWallSelectable = _newWall.GetComponent<Selectable>();
-
-                newWallSelectable.SelectOnly();
-            }
-
-            SetCurrentSnapPoint(null);
-
-            Exit(hasSelectionStateSO);*/
-        }
-
-        private RectangleLine CreateNewWall()
-        {
-            RectangleLine newWall = Instantiate(newWallPrefab);
-
-            newWall.transform.SetParent(wallsParent, true);
-            newWall.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-
-            newWall.SetActiveEndPoints(false);
-            newWall.Move(_wallStartPoint);
-
-            return newWall;
+            Exit(hasSelectionStateSO);
         }
 
     }

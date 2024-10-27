@@ -6,11 +6,7 @@ namespace Upform.Designer
     public class RectangleLine : MonoBehaviour
     {
 
-        [Header("References")]
-        [SerializeField] private MeshCollider meshCollider;
         [SerializeField] private MeshFilter meshFilter;
-
-        [Header("Points")]
         [SerializeField] private Transform startPoint;
         [SerializeField] private Transform endPoint;
         [SerializeField] private Transform bottomLeftPoint;
@@ -21,6 +17,8 @@ namespace Upform.Designer
         private Mesh _mesh;
         private float _length;
         private float _thickness;
+
+        public Mesh Mesh => _mesh;
 
         public Vector3 Perpendicular
         {
@@ -64,69 +62,43 @@ namespace Upform.Designer
                 topRightPoint.localPosition = topRight;
 
                 RecalculateMesh();
-
-                UpdateMeshCollider();
             }
         }
 
         private void Awake()
         {
-            _mesh = new();
+            _mesh = MeshBuilder.CreateNewQuad(bottomLeftPoint.localPosition, bottomRightPoint.localPosition, topLeftPoint.localPosition, topRightPoint.localPosition);
 
-            Length = Mathf.Abs(bottomLeftPoint.localPosition.x - bottomRightPoint.localPosition.x);
+            _length = Mathf.Abs(bottomLeftPoint.localPosition.x - bottomRightPoint.localPosition.x);
+
+            _thickness = (bottomLeftPoint.position - topLeftPoint.position).magnitude;
 
             RecalculateMesh();
-
-            UpdateMeshCollider();
         }
 
-        public void Move(Vector3 position)
+        public void SetStartPoint(Vector3 position)
         {
-            position.y = transform.position.y;
+            startPoint.transform.position = position;
 
-            transform.position = position;
+            UpdateEndPoints();
+
+            RecalculateMesh();
         }
 
-        public void SetActiveEndPoints(bool enabled)
+        public void SetEndPoint(Vector3 position)
         {
-            startPoint.gameObject.SetActive(enabled);
-            endPoint.gameObject.SetActive(enabled);
-        }
+            endPoint.transform.position = position;
 
-        public void SetEndPointPosition(Vector3 endPosition)
-        {
-            endPosition.y = endPoint.transform.position.y;
-
-            endPoint.transform.position = endPosition;
-
-            Vector3 distance = endPoint.transform.position - startPoint.transform.position;
-
-            Vector3 direction = distance.normalized;
-
-            Vector3 cross = Vector3.Cross(direction, Vector3.up);
-
-            float offsetZ = _thickness / 2f;
-
-            topRightPoint.position = endPoint.transform.position + (cross * offsetZ);
-            bottomRightPoint.position = endPoint.transform.position - (cross * offsetZ);
-
-            topLeftPoint.position = startPoint.transform.position + (cross * offsetZ);
-            bottomLeftPoint.position = startPoint.transform.position - (cross * offsetZ);
+            UpdateEndPoints();
 
             RecalculateMesh();
         }
 
         public void RecalculateMesh()
         {
-            MeshBuilder.CreateQuadForMesh(ref _mesh, bottomLeftPoint.localPosition, bottomRightPoint.localPosition, topLeftPoint.localPosition, topRightPoint.localPosition);
+            MeshBuilder.SetQuadVertices(ref _mesh, bottomLeftPoint.localPosition, bottomRightPoint.localPosition, topLeftPoint.localPosition, topRightPoint.localPosition);
 
             meshFilter.mesh = _mesh;
-        }
-
-        public void UpdateMeshCollider()
-        {
-            meshCollider.sharedMesh = null;
-            meshCollider.sharedMesh = _mesh;
         }
 
         public Vector3 GetClosestPosition(Vector3 position)
@@ -143,6 +115,23 @@ namespace Upform.Designer
             float clampedMagnitude = Mathf.Clamp(positionOnLine.magnitude, 0f, startToEnd.magnitude);
 
             return startPosition + clampedMagnitude * positionOnLine.normalized;
+        }
+
+        private void UpdateEndPoints()
+        {
+            Vector3 distance = endPoint.transform.position - startPoint.transform.position;
+
+            Vector3 direction = distance.normalized;
+
+            Vector3 cross = Vector3.Cross(direction, Vector3.up);
+
+            float offsetZ = _thickness / 2f;
+
+            topLeftPoint.position = startPoint.transform.position + (cross * offsetZ);
+            bottomLeftPoint.position = startPoint.transform.position - (cross * offsetZ);
+
+            topRightPoint.position = endPoint.transform.position + (cross * offsetZ);
+            bottomRightPoint.position = endPoint.transform.position - (cross * offsetZ);
         }
 
     }
