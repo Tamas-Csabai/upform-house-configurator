@@ -12,7 +12,6 @@ namespace Upform.Designer
         public void SetSize(float size)
         {
             meshRenderer.transform.localScale = size * Vector3.one;
-            Debug.Log(meshRenderer.transform.localScale, meshRenderer);
         }
 
         public void ShowPoint()

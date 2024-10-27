@@ -10,7 +10,7 @@ namespace Upform.Designer
     public class CreateNewWalls_State : StateBase
     {
 
-        [SerializeField] private StateSO hasSelectionStateSO;
+        [SerializeField] private StateSO emptySelectionStateSO;
         [SerializeField] private WallSO wallSO;
         [SerializeField] private Graph graph;
         [SerializeField] private IntersectionCreator intersectionCreator;
@@ -21,6 +21,8 @@ namespace Upform.Designer
 
         public override void OnEntering()
         {
+            SelectionManager.ClearSelection();
+
             _startIntersection = null;
             _endIntersection = null;
             _newWall = null;
@@ -96,12 +98,9 @@ namespace Upform.Designer
 
         private void Confirm()
         {
-            if(_newWall != null)
-            {
-                SelectionManager.SelectOnly(_newWall.Entity.Selectable);
-            }
+            SelectionManager.ClearSelection();
 
-            Exit(hasSelectionStateSO);
+            Exit(emptySelectionStateSO);
         }
 
     }

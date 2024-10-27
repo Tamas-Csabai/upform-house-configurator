@@ -16,6 +16,10 @@ namespace Upform.Designer
 
         public Edge Edge => edge;
 
+        public Vector3 Perpendicular => rectangleLine.Perpendicular;
+
+        public float Thickness => rectangleLine.Thickness;
+
         public WallSO WallSO
         {
             get => _wallSO;

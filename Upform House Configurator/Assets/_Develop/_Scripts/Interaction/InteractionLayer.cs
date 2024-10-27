@@ -6,6 +6,7 @@ namespace Upform.Interaction
     {
         Default = 1,
         Intersection = 2,
-        Wall = 4
+        Wall = 4,
+        WallObject = 8
     }
 }
