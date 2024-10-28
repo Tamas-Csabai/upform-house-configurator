@@ -12,71 +12,36 @@ namespace Upform.Core
     {
 
         [SerializeField] private StateSO emptySelectionStateSO;
+        [SerializeField] private IntersectionMover intersectionMover;
 
-        private Coroutine _moveCurrentSelectable_Routine;
-        private RectangleLine _currentWall;
+        private Intersection _currentIntersection;
         private Selectable _currentSelectable;
         private Interactable _currentInteractable;
-        private Vector3 _hoverPosition;
-        private Vector3 _moveStartHoverPosition;
-        private Vector3 _wallStartPosition;
-        private Vector3 _offset;
-        private Vector3 _perpendicular;
 
         public override void OnEntering()
         {
             SelectionManager.OnMainSelectionChanged += MainSelectionChanged;
-            InteractionManager.OnHovering += Hovering;
-            InteractionManager.OnInteract += StopMove;
 
             MainSelectionChanged(SelectionManager.CurrentSelectionGroup.Main);
         }
 
-        private void Hovering(InteractionHit hit)
-        {
-            _hoverPosition = hit.Point;
-        }
-
         private void StartMove()
         {
-            _moveStartHoverPosition = _hoverPosition;
-            _wallStartPosition = _currentWall.transform.position;
-            _perpendicular = _currentWall.Perpendicular;
+            InteractionManager.OnInteract += StopMove;
 
-            if (_moveCurrentSelectable_Routine != null)
-            {
-                StopCoroutine(_moveCurrentSelectable_Routine);
-            }
-
-            _moveCurrentSelectable_Routine = StartCoroutine(MoveCurrentSelectable_Routine());
+            intersectionMover.StartInteraction(_currentIntersection);
         }
 
         private void StopMove(InteractionHit hit)
         {
-            if (_moveCurrentSelectable_Routine != null)
-            {
-                StopCoroutine(_moveCurrentSelectable_Routine);
-            }
+            InteractionManager.OnInteract -= StopMove;
 
-            _moveCurrentSelectable_Routine = null;
-        }
-
-        private IEnumerator MoveCurrentSelectable_Routine()
-        {
-            while (true)
-            {
-                Vector3 targetPosition = Vector3.Project(_hoverPosition - _moveStartHoverPosition, _perpendicular);
-                targetPosition.y = 0f;
-                _currentWall.transform.position = _wallStartPosition + targetPosition;
-
-                yield return null;
-            }
+            intersectionMover.StopInteraction();
         }
 
         public override void OnExiting()
         {
             SelectionManager.OnMainSelectionChanged -= MainSelectionChanged;
-            InteractionManager.OnHovering -= Hovering;
             InteractionManager.OnInteract -= StopMove;
 
             if (_currentInteractable != null)
@@ -95,7 +60,7 @@ namespace Upform.Core
 
             _currentSelectable = selectable;
 
-            _currentWall = _currentSelectable.GetComponent<RectangleLine>();
+            _currentIntersection = _currentSelectable.GetComponent<Intersection>();
 
             if (_currentInteractable != null)
             {

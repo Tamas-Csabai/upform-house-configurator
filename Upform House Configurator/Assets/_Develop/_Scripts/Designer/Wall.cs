@@ -36,6 +36,19 @@ namespace Upform.Designer
         {
             edge.OnStartNodeChanged += StartNodeChanged;
             edge.OnEndNodeChanged += EndNodeChanged;
+            edge.OnNodeMoved += NodeMoved;
+        }
+
+        private void NodeMoved(Node node)
+        {
+            if(node == edge.StartNode)
+            {
+                StartNodeChanged(node);
+            }
+            else
+            {
+                EndNodeChanged(node);
+            }
         }
 
         private void OnDestroy()
@@ -44,6 +57,7 @@ namespace Upform.Designer
             {
                 edge.OnStartNodeChanged -= StartNodeChanged;
                 edge.OnEndNodeChanged -= EndNodeChanged;
+                edge.OnNodeMoved -= NodeMoved;
             }
         }
 

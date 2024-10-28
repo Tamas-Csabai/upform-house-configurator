@@ -572,6 +572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateSO: {fileID: 11400000, guid: e43ed1634f3d8b24aac6dc06c779a8a5, type: 2}
   emptySelectionStateSO: {fileID: 11400000, guid: 4d76fdbdc2a231c438280e342d0dad9b, type: 2}
+  intersectionMover: {fileID: 1123537027}
 --- !u!114 &360047900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2439,6 +2440,7 @@ GameObject:
   - component: {fileID: 1123537021}
   - component: {fileID: 1123537023}
   - component: {fileID: 1123537024}
+  - component: {fileID: 1123537027}
   - component: {fileID: 1123537025}
   - component: {fileID: 1123537026}
   m_Layer: 0
@@ -2502,6 +2504,7 @@ MonoBehaviour:
   designerComponenets:
   - {fileID: 1123537023}
   - {fileID: 1123537024}
+  - {fileID: 1123537027}
 --- !u!114 &1123537023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2555,6 +2558,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   angleLine: {fileID: 1614100348}
+--- !u!114 &1123537027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123537019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79e1a373caf07704eb4daa88c636c0e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1127509303
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ namespace Upform.Designer
 
         [SerializeField] private Node node;
         [SerializeField] private Point point;
+        [SerializeField] private new Collider collider;
 
         private WallSO _wallSO;
 
@@ -23,6 +24,26 @@ namespace Upform.Designer
 
                 gameObject.name = _wallSO.Name + " Intersection";
                 point.SetSize(_wallSO.Thickness);
+            }
+        }
+
+        public void Move(Vector3 position)
+        {
+            node.Move(position);
+        }
+
+        public void SetCollider(bool enabled)
+        {
+            collider.enabled = enabled;
+        }
+
+        public void SetWallColliders(bool enabled)
+        {
+            foreach(Edge edge in node.Edges)
+            {
+                Wall wall = edge.GetComponent<Wall>();
+
+                wall.SetMeshColliderEnabled(enabled);
             }
         }
 

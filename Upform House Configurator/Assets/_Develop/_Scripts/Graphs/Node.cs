@@ -9,6 +9,8 @@ namespace Upform.Graphs
 
         private HashSet<Edge> _edges = new();
 
+        public HashSet<Edge> Edges => _edges;
+
         public Edge GetEdge(Node otherNode)
         {
             foreach (Edge edge in _edges)

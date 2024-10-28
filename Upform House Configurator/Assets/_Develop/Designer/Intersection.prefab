@@ -67,6 +67,7 @@ MonoBehaviour:
   entity: {fileID: 7564857108246493996}
   node: {fileID: 6819736510194344847}
   point: {fileID: 7396659218485347697}
+  collider: {fileID: 4064129827044790231}
 --- !u!114 &1220952645438041951
 MonoBehaviour:
   m_ObjectHideFlags: 0
