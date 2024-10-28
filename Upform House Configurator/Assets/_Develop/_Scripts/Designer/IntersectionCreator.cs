@@ -70,6 +70,7 @@ namespace Upform.Designer
 
             _newIntersectionVisualPoint.gameObject.SetActive(false);
             _confirmVisualPoint.gameObject.SetActive(false);
+            _angles.SetLineActive(false);
         }
 
         private void Interact(InteractionHit interactionHit)
@@ -115,6 +116,9 @@ namespace Upform.Designer
                 if (_prevIntersection != null)
                 {
                     anglePosition = _angles.WorldToAngleOnPlane(_prevIntersection.transform.position, interactionPoint);
+
+                    _angles.SetLineActive(true);
+                    _angles.SetLine(_prevIntersection.transform.position, _prevIntersection.transform.position + Vector3.right, anglePosition);
                 }
 
                 _newIntersectionPosition = anglePosition + (_verticalOffset * Vector3.up);

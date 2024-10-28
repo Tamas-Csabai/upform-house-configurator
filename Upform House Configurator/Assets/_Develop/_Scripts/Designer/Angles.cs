@@ -5,9 +5,11 @@ namespace Upform.Designer
     public class Angles : MonoBehaviour
     {
 
+        [SerializeField] private AngleLine angleLine;
+
         private float _step;
 
-        private Vector3[] _stepDirections; 
+        private Vector3[] _stepDirections;
 
         public float Step
         {
@@ -29,6 +31,11 @@ namespace Upform.Designer
 
         public Vector3 WorldToAngleOnPlane(Vector3 origin, Vector3 worldPosition)
         {
+            if(_step == 0)
+            {
+                return worldPosition;
+            }
+
             Vector3 direction = (worldPosition - origin).normalized;
 
             float minAngle = float.MaxValue;
@@ -47,6 +54,18 @@ namespace Upform.Designer
             Vector3 closestPoint = Utils.FindClosestPositionOnLine(origin, closestDirection, worldPosition);
             
             return closestPoint;
+        }
+
+        public void SetLine(Vector3 crossPoint, Vector3 point1, Vector3 point2)
+        {
+            angleLine.CrossPoint.position = crossPoint;
+            angleLine.Point1.position = point1;
+            angleLine.Point2.position = point2;
+        }
+
+        public void SetLineActive(bool isActive)
+        {
+            angleLine.gameObject.SetActive(isActive);
         }
 
         /*
