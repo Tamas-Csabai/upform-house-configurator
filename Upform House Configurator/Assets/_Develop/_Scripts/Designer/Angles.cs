@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace Upform.Designer
 {
@@ -18,6 +19,12 @@ namespace Upform.Designer
             {
                 _step = value;
 
+                if(_step < 1f || _step >= 360f)
+                {
+                    _step = 0f;
+                    return;
+                }
+
                 int stepCount = Mathf.CeilToInt(360f / _step);
 
                 _stepDirections = new Vector3[stepCount];
@@ -27,6 +34,11 @@ namespace Upform.Designer
                     _stepDirections[i] = Quaternion.Euler(0, i * _step, 0) * Vector3.forward;
                 }
             }
+        }
+
+        private void Awake()
+        {
+            angleLine.gameObject.SetActive(false);
         }
 
         public Vector3 WorldToAngleOnPlane(Vector3 origin, Vector3 worldPosition)

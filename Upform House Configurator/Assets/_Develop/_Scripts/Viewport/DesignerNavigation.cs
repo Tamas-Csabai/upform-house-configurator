@@ -11,6 +11,7 @@ namespace Upform
 
         [Header("References")]
         [SerializeField] private Camera designerCamera;
+        [SerializeField] private Camera uiOverlayCamera;
 
         [Header("Keys")]
         [SerializeField] private KeyCode moveKey;
@@ -63,6 +64,7 @@ namespace Upform
             transform.position = _initialPosition;
             transform.rotation = _initialRotation;
             designerCamera.orthographicSize = _initialCameraOrthographicSize;
+            uiOverlayCamera.orthographicSize = _initialCameraOrthographicSize;
         }
 
         private void MoveCamera()
@@ -99,7 +101,9 @@ namespace Upform
             {
                 float zoomAmount = amount * zoomSpeed;
 
-                designerCamera.orthographicSize = Mathf.Clamp(designerCamera.orthographicSize - zoomAmount, minZoomDistance, maxZoomDistance);
+                float orthographicSize = Mathf.Clamp(designerCamera.orthographicSize - zoomAmount, minZoomDistance, maxZoomDistance);
+                designerCamera.orthographicSize = orthographicSize;
+                uiOverlayCamera.orthographicSize = orthographicSize;
             }
         }
     }

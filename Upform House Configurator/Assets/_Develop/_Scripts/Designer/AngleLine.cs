@@ -47,8 +47,8 @@ namespace Upform.Designer
             lineRenderer2.SetPosition(0, crossPoint.position);
             lineRenderer2.SetPosition(1, point2.position);
 
-            Vector3 vector1 = point1.position - crossPoint.position;
-            Vector3 vector2 = point2.position - crossPoint.position;
+            Vector3 vector1 = Vector3.ProjectOnPlane(point1.position - crossPoint.position, Vector3.up);
+            Vector3 vector2 = Vector3.ProjectOnPlane(point2.position - crossPoint.position, Vector3.up);
 
             Vector3 axis1 = vector1.normalized;
             Vector3 axis2 = vector2.normalized;

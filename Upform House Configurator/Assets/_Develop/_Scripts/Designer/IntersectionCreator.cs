@@ -111,17 +111,17 @@ namespace Upform.Designer
 
             if (!_hasSnapPoint)
             {
-                Vector3 anglePosition = interactionPoint;
+                Vector3 angledPosition = interactionPoint;
 
                 if (_prevIntersection != null)
                 {
-                    anglePosition = _angles.WorldToAngleOnPlane(_prevIntersection.transform.position, interactionPoint);
+                    angledPosition = _angles.WorldToAngleOnPlane(_prevIntersection.transform.position, interactionPoint);
 
                     _angles.SetLineActive(true);
-                    _angles.SetLine(_prevIntersection.transform.position, _prevIntersection.transform.position + Vector3.right, anglePosition);
+                    _angles.SetLine(_prevIntersection.transform.position, _prevIntersection.transform.position + Vector3.right, angledPosition);
                 }
 
-                _newIntersectionPosition = anglePosition + (_verticalOffset * Vector3.up);
+                _newIntersectionPosition = angledPosition + (_verticalOffset * Vector3.up);
             }
             else
             {
@@ -130,6 +130,12 @@ namespace Upform.Designer
                     _newIntersectionPosition = _currentHoveredWall.GetClosestPosition(interactionPoint);
 
                     _confirmVisualPoint.transform.position = _newIntersectionPosition;
+
+                    if (_prevIntersection != null)
+                    {
+                        _angles.SetLineActive(true);
+                        _angles.SetLine(_prevIntersection.transform.position, _prevIntersection.transform.position + Vector3.right, _newIntersectionPosition);
+                    }
                 }
             }
 

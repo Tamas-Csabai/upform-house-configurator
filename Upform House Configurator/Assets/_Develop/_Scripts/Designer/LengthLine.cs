@@ -23,7 +23,7 @@ namespace Upform.Designer
 
             _prevVector = endPoint.position - startPoint.position;
 
-            textMeshPro.transform.position = startPoint.position + (_prevVector / 2f) + (0.1f * Vector3.up);
+            textMeshPro.transform.position = startPoint.position + (_prevVector / 2f);
             textMeshPro.text = _prevVector.magnitude.ToString("0.00");
         }
 
@@ -37,7 +37,7 @@ namespace Upform.Designer
             if(vector != _prevVector)
             {
                 _prevVector = vector;
-                textMeshPro.transform.position = startPoint.position + (vector / 2f) + (0.1f * Vector3.up);
+                textMeshPro.transform.position = startPoint.position + (vector / 2f);
                 textMeshPro.text = vector.magnitude.ToString("0.00");
             }
         }
