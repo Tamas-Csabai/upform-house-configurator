@@ -5,13 +5,11 @@ using Upform.Interaction;
 
 namespace Upform.Designer
 {
-    public class IntersectionCreator : MonoBehaviour
+    public class IntersectionCreator : DesignerComponenet
     {
 
-        [SerializeField] private float verticalOffset = 0.1f;
         [SerializeField] private Point newIntersectionVisualPointPrefab;
         [SerializeField] private Point confirmVisualPointPrefab;
-        [SerializeField] private Graph graph;
 
         private Vector3 _newIntersectionPosition;
         private bool _hasSnapPoint;
@@ -76,14 +74,14 @@ namespace Upform.Designer
         {
             if (_currentIntersection == null)
             {
-                Node newNode = graph.AddNewNode(_newIntersectionPosition);
+                Node newNode = _graph.AddNewNode(_newIntersectionPosition);
 
                 _currentIntersection = newNode.GetComponent<Intersection>();
                 _currentIntersection.WallSO = _wallSO;
 
                 if (_currentHoveredWall != null)
                 {
-                    Edge newEdge = graph.InsertNode(newNode, _currentHoveredWall.Edge);
+                    Edge newEdge = _graph.InsertNode(newNode, _currentHoveredWall.Edge);
 
                     Wall newWall = newEdge.GetComponent<Wall>();
                     newWall.WallSO = _currentHoveredWall.WallSO;
@@ -99,19 +97,23 @@ namespace Upform.Designer
             {
                 OnIntersectionSelected?.Invoke(_currentIntersection);
             }
+
+            _currentIntersection = null;
         }
 
         private void Hovering(InteractionHit interactionHit)
         {
+            Vector3 interactionPoint = _grid.WorldToCellOnPlane(interactionHit.Point);
+
             if (!_hasSnapPoint)
             {
-                _newIntersectionPosition = interactionHit.Point + (verticalOffset * Vector3.up);
+                _newIntersectionPosition = interactionPoint + (_verticalOffset * Vector3.up);
             }
             else
             {
                 if(_currentHoveredWall != null)
                 {
-                    _newIntersectionPosition = _currentHoveredWall.GetClosestPosition(interactionHit.Point);
+                    _newIntersectionPosition = _currentHoveredWall.GetClosestPosition(interactionPoint);
 
                     _confirmVisualPoint.transform.position = _newIntersectionPosition;
                 }

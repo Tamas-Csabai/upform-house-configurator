@@ -3,7 +3,7 @@ using Upform.Interaction;
 
 namespace Upform.Designer
 {
-    public class WallObjectCreator : MonoBehaviour
+    public class WallObjectCreator : DesignerComponenet
     {
 
         [SerializeField] private WallObject wallObjectPrefab;

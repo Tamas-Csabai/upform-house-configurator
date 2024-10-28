@@ -1671,6 +1671,7 @@ GameObject:
   - component: {fileID: 1123537021}
   - component: {fileID: 1123537023}
   - component: {fileID: 1123537024}
+  - component: {fileID: 1123537025}
   m_Layer: 0
   m_Name: '[ DESIGNER ]'
   m_TagString: Untagged
@@ -1723,6 +1724,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88218d12a4255374ca78fdb4762ac214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultGridCellSize: 0.1
+  verticalOffset: 0.1
+  graph: {fileID: 53405299}
+  grid: {fileID: 1123537025}
+  designerComponenets:
+  - {fileID: 1123537023}
+  - {fileID: 1123537024}
 --- !u!114 &1123537023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1735,10 +1743,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ef0254ea28f2946a5e087736c2cf06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  verticalOffset: 0.1
   newIntersectionVisualPointPrefab: {fileID: 382273501648238114, guid: de7cc38e912673644a706aaf85c4f4f7, type: 3}
   confirmVisualPointPrefab: {fileID: 382273501648238114, guid: d737f4f2662bc954da71fc9e491d64e6, type: 3}
-  graph: {fileID: 53405299}
 --- !u!114 &1123537024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1753,6 +1759,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wallObjectPrefab: {fileID: 588239623017938778, guid: 6ea14032d1c59cd42bbc8ad61258b4e5, type: 3}
   wallObjectsParent: {fileID: 337925333}
+--- !u!114 &1123537025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123537019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ad85c4bc82a4147b388fb08d770404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1127509303
 GameObject:
   m_ObjectHideFlags: 0
