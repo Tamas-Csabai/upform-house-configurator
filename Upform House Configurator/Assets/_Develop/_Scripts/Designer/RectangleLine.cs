@@ -87,18 +87,7 @@ namespace Upform.Designer
 
         public Vector3 GetClosestPosition(Vector3 position)
         {
-            return FindClosestPositionOnSection(startPoint.position, endPoint.position, position);
-        }
-
-        private Vector3 FindClosestPositionOnSection(Vector3 startPosition, Vector3 endPosition, Vector3 position)
-        {
-            Vector3 startToEnd = endPosition - startPosition;
-            Vector3 startToPoint = position - startPosition;
-            Vector3 positionOnLine = Vector3.Project(startToPoint, startToEnd);
-
-            float clampedMagnitude = Mathf.Clamp(positionOnLine.magnitude, 0f, startToEnd.magnitude);
-
-            return startPosition + clampedMagnitude * positionOnLine.normalized;
+            return Utils.FindClosestPositionOnSection(startPoint.position, endPoint.position, position);
         }
 
         private void UpdateEndPoints()

@@ -16,6 +16,7 @@ namespace Upform.Designer
         private Point _newIntersectionVisualPoint;
         private Point _confirmVisualPoint;
         private Intersection _currentIntersection;
+        private Intersection _prevIntersection;
         private Wall _currentHoveredWall;
         private WallSO _wallSO;
 
@@ -52,6 +53,7 @@ namespace Upform.Designer
 
             _currentHoveredWall = null;
             _currentIntersection = null;
+            _prevIntersection = null;
 
             InteractionManager.OnInteract += Interact;
             InteractionManager.OnHovering += Hovering;
@@ -98,6 +100,7 @@ namespace Upform.Designer
                 OnIntersectionSelected?.Invoke(_currentIntersection);
             }
 
+            _prevIntersection = _currentIntersection;
             _currentIntersection = null;
         }
 
@@ -107,7 +110,14 @@ namespace Upform.Designer
 
             if (!_hasSnapPoint)
             {
-                _newIntersectionPosition = interactionPoint + (_verticalOffset * Vector3.up);
+                Vector3 anglePosition = interactionPoint;
+
+                if (_prevIntersection != null)
+                {
+                    anglePosition = _angles.WorldToAngleOnPlane(_prevIntersection.transform.position, interactionPoint);
+                }
+
+                _newIntersectionPosition = anglePosition + (_verticalOffset * Vector3.up);
             }
             else
             {
