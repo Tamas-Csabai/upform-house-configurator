@@ -22,6 +22,16 @@ namespace Upform.Designer
             }
         }
 
+        public void SetGridSize(float size)
+        {
+            grid.Size = size;
+        }
+
+        public void SetGridSize(string sizeText)
+        {
+            SetGridSize(float.Parse(sizeText));
+        }
+
 
 #if UNITY_EDITOR
         [NaughtyAttributes.Button("Get " + nameof(designerComponenets))]
