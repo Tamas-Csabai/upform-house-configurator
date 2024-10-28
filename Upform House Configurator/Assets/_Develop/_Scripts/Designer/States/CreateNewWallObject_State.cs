@@ -1,4 +1,5 @@
 using UnityEngine;
+using Upform.Interaction;
 using Upform.Selection;
 using Upform.States;
 
@@ -16,6 +17,8 @@ namespace Upform.Designer
         {
             SelectionManager.ClearSelection();
 
+            InteractionManager.OnAction += Cancel;
+
             Cursor.visible = false;
 
             wallObjectCreator.OnNewWallObject += NewWallObject;
@@ -24,6 +27,8 @@ namespace Upform.Designer
 
         public override void OnExiting()
         {
+            InteractionManager.OnAction -= Cancel;
+
             wallObjectCreator.StopInteraction();
             wallObjectCreator.OnNewWallObject -= NewWallObject;
 
@@ -45,5 +50,11 @@ namespace Upform.Designer
                 Exit(emptySelectionStateSO);
             }
         }
+
+        private void Cancel(InteractionHit interactionHit)
+        {
+            NewWallObject(null);
+        }
+
     }
 }

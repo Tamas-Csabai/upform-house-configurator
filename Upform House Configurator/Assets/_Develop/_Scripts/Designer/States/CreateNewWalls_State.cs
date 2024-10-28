@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using Upform.Graphs;
+using Upform.Interaction;
 using Upform.Selection;
 using Upform.States;
 
@@ -29,6 +30,8 @@ namespace Upform.Designer
             _endIntersection = null;
             _newWall = null;
 
+            InteractionManager.OnAction += Cancel;
+
             intersectionCreator.OnNewIntersection += NewIntersection;
             intersectionCreator.OnIntersectionSelected += IntersectionSelected;
             intersectionCreator.OnNewIntersectionOnWall += NewIntersectionOnWall;
@@ -37,6 +40,8 @@ namespace Upform.Designer
 
         public override void OnExiting()
         {
+            InteractionManager.OnAction -= Cancel;
+
             intersectionCreator.StopInteraction();
             intersectionCreator.OnNewIntersection -= NewIntersection;
             intersectionCreator.OnIntersectionSelected -= IntersectionSelected;
@@ -105,6 +110,11 @@ namespace Upform.Designer
             SelectionManager.ClearSelection();
 
             Exit(emptySelectionStateSO);
+        }
+
+        private void Cancel(InteractionHit interactionHit)
+        {
+            Confirm();
         }
 
     }
