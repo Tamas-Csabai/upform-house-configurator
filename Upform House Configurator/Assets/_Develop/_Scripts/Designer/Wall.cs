@@ -15,6 +15,8 @@ namespace Upform.Designer
         private WallSO _wallSO;
         private bool _isMoving = false;
 
+        public event System.Action OnMeshChanged;
+
         public Edge Edge => edge;
 
         public Vector3 Perpendicular => rectangleLine.Perpendicular;
@@ -80,6 +82,8 @@ namespace Upform.Designer
             {
                 UpdateMeshCollider();
             }
+
+            MeshChanged();
         }
 
         private void EndNodeChanged(Node node)
@@ -90,12 +94,19 @@ namespace Upform.Designer
             {
                 UpdateMeshCollider();
             }
+
+            MeshChanged();
         }
 
-        public void UpdateMeshCollider()
+        private void UpdateMeshCollider()
         {
             meshCollider.sharedMesh = null;
             meshCollider.sharedMesh = rectangleLine.Mesh;
+        }
+
+        private void MeshChanged()
+        {
+            OnMeshChanged?.Invoke();
         }
 
         public void SetMeshColliderEnabled(bool enabled)

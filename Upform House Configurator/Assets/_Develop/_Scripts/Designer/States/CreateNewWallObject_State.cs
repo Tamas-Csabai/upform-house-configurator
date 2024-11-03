@@ -19,8 +19,6 @@ namespace Upform.Designer
 
             InteractionManager.OnAction += Cancel;
 
-            Cursor.visible = false;
-
             wallObjectCreator.OnNewWallObject += NewWallObject;
             wallObjectCreator.StartInteraction(wallObjectSO);
         }
@@ -31,8 +29,6 @@ namespace Upform.Designer
 
             wallObjectCreator.StopInteraction();
             wallObjectCreator.OnNewWallObject -= NewWallObject;
-
-            Cursor.visible = true;
         }
 
         private void NewWallObject(WallObject wallObject)

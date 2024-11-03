@@ -24,8 +24,6 @@ namespace Upform.Designer
         {
             SelectionManager.ClearSelection();
 
-            Cursor.visible = false;
-
             _startIntersection = null;
             _endIntersection = null;
             _newWall = null;
@@ -46,8 +44,6 @@ namespace Upform.Designer
             intersectionCreator.OnNewIntersection -= NewIntersection;
             intersectionCreator.OnIntersectionSelected -= IntersectionSelected;
             intersectionCreator.OnNewIntersectionOnWall -= NewIntersectionOnWall;
-
-            Cursor.visible = true;
         }
 
         private void NewIntersection(Intersection intersection)

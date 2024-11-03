@@ -60,16 +60,13 @@ namespace Upform.Designer
         private void Hovering(InteractionHit interactionHit)
         {
             Vector3 newWallObjectPosition = interactionHit.Point;
-            Vector3 newWallObjectForward = Vector3.forward;
 
             if (_currentHoveredWall != null)
             {
                 newWallObjectPosition = _currentHoveredWall.GetClosestPosition(interactionHit.Point);
-                newWallObjectForward = _currentHoveredWall.Perpendicular;
             }
 
-            _newWallObject.transform.position = newWallObjectPosition;
-            _newWallObject.transform.forward = newWallObjectForward;
+            _newWallObject.Move(newWallObjectPosition);
         }
 
         private void HoverEnter(InteractionHit interactionHit)
