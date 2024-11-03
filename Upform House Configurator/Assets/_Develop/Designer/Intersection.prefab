@@ -105,6 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f5c5bb5c5bdabe4daebec6ba35a1a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intersection: {fileID: 7547595662541916204}
 --- !u!1 &4850899574224016353
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ namespace Upform.Designer
         [SerializeField] private MeshCollider meshCollider;
 
         private WallSO _wallSO;
+        private bool _isMoving = false;
 
         public Edge Edge => edge;
 
@@ -61,21 +62,37 @@ namespace Upform.Designer
             }
         }
 
+        public void StartMove()
+        {
+            _isMoving = true;
+        }
+
+        public void StopMove()
+        {
+            _isMoving = false;
+        }
+
         private void StartNodeChanged(Node node)
         {
             rectangleLine.SetStartPoint(node.transform.position);
 
-            UpdateMeshCollider();
+            if (!_isMoving)
+            {
+                UpdateMeshCollider();
+            }
         }
 
         private void EndNodeChanged(Node node)
         {
             rectangleLine.SetEndPoint(node.transform.position);
 
-            UpdateMeshCollider();
+            if (!_isMoving)
+            {
+                UpdateMeshCollider();
+            }
         }
 
-        private void UpdateMeshCollider()
+        public void UpdateMeshCollider()
         {
             meshCollider.sharedMesh = null;
             meshCollider.sharedMesh = rectangleLine.Mesh;

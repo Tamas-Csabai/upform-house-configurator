@@ -1,9 +1,12 @@
 using UnityEngine;
+using Upform.Designer;
 
 namespace Upform.Graphs
 {
     public class Edge : MonoBehaviour
     {
+
+        [SerializeField] private Wall wall;
 
         private Node _startNode;
         private Node _endNode;
@@ -11,6 +14,8 @@ namespace Upform.Graphs
         public event System.Action<Node> OnStartNodeChanged;
         public event System.Action<Node> OnEndNodeChanged;
         public event System.Action<Node> OnNodeMoved;
+
+        public Wall Wall => wall;
 
         public Node StartNode
         {

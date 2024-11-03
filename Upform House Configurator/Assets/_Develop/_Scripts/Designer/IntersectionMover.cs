@@ -13,9 +13,8 @@ namespace Upform.Designer
         {
             _intersection = intersection;
 
-            _intersection.SetWallColliders(false);
-            _intersection.SetCollider(false);
-
+            _intersection.StartMove();
+            
             InteractionManager.OnHovering += Hovering;
         }
 
@@ -30,8 +29,7 @@ namespace Upform.Designer
         {
             if(_intersection != null)
             {
-                _intersection.SetWallColliders(true);
-                _intersection.SetCollider(true);
+                _intersection.StopMove();
             }
 
             _intersection = null;

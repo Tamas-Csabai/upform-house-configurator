@@ -27,24 +27,40 @@ namespace Upform.Designer
             }
         }
 
+        public void StartMove()
+        {
+            SetCollider(false);
+
+            foreach (Edge edge in node.Edges)
+            {
+                Wall wall = edge.Wall;
+
+                wall.StartMove();
+                wall.SetMeshColliderEnabled(false);
+            }
+        }
+
         public void Move(Vector3 position)
         {
             node.Move(position);
         }
 
+        public void StopMove()
+        {
+            SetCollider(true);
+
+            foreach (Edge edge in node.Edges)
+            {
+                Wall wall = edge.Wall;
+
+                wall.StopMove();
+                wall.SetMeshColliderEnabled(true);
+            }
+        }
+
         public void SetCollider(bool enabled)
         {
             collider.enabled = enabled;
-        }
-
-        public void SetWallColliders(bool enabled)
-        {
-            foreach(Edge edge in node.Edges)
-            {
-                Wall wall = edge.GetComponent<Wall>();
-
-                wall.SetMeshColliderEnabled(enabled);
-            }
         }
 
     }

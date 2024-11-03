@@ -10,7 +10,7 @@ namespace Upform.Designer
         [SerializeField] private float defaultAngleStep = 45f;
         [SerializeField] private float verticalOffset = 0.1f;
         [SerializeField] private Graph graph;
-        [SerializeField] private Grid grid;
+        [SerializeField] private CellGrid grid;
         [SerializeField] private Angles angles;
         [SerializeField] private DesignerComponenet[] designerComponenets;
 

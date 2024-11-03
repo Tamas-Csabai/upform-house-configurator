@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Upform.Designer
 {
-    public class Grid : MonoBehaviour
+    public class CellGrid : MonoBehaviour
     {
 
         private float _size = 0f;
