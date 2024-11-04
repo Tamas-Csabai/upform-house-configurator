@@ -16,17 +16,20 @@ namespace Upform.Designer
             }
         }
 
-        public Vector3 WorldToCellOnPlane(Vector3 worldPosition)
+        public Vector3 WorldToCellCenterOnPlane(Vector3 worldPosition)
         {
             if(_size == 0f)
             {
                 return worldPosition;
             }
 
+            float halfSize = _size / 2f;
+
             Vector3 cellPosition = worldPosition / _size;
-            cellPosition.x = Mathf.FloorToInt(cellPosition.x) * _size;
+
+            cellPosition.x = Mathf.FloorToInt(cellPosition.x) * _size + halfSize;
             cellPosition.y = worldPosition.y;
-            cellPosition.z = Mathf.FloorToInt(cellPosition.z) * _size;
+            cellPosition.z = Mathf.FloorToInt(cellPosition.z) * _size + halfSize;
 
             return cellPosition;
         }

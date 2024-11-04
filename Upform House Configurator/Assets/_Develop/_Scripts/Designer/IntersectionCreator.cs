@@ -107,7 +107,7 @@ namespace Upform.Designer
 
         private void Hovering(InteractionHit interactionHit)
         {
-            Vector3 interactionPoint = _designerHandler.GridSnap.WorldToCellOnPlane(interactionHit.Point);
+            Vector3 interactionPoint = _designerHandler.GridSnap.WorldToCellCenterOnPlane(interactionHit.Point);
 
             if (!_hasSnapPoint)
             {

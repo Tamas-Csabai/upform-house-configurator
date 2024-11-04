@@ -1031,7 +1031,7 @@ Transform:
   m_GameObject: {fileID: 478139356}
   serializedVersion: 2
   m_LocalRotation: {x: 0.70710576, y: -0, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalPosition: {x: 0.1, y: -0, z: 0.1}
   m_LocalScale: {x: 50, y: 50, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2281,6 +2281,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1451108474}
     m_Modifications:
+    - target: {fileID: 1768184849469376548, guid: 5b95129f15a0bd442af36c41972bbe2f, type: 3}
+      propertyPath: m_Parameters.alignment
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768184849469376548, guid: 5b95129f15a0bd442af36c41972bbe2f, type: 3}
+      propertyPath: m_Parameters.textureMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768184849469376548, guid: 5b95129f15a0bd442af36c41972bbe2f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 076bf771dcd3c15409ce1d6d1d82eab1, type: 2}
+    - target: {fileID: 1768184849469376548, guid: 5b95129f15a0bd442af36c41972bbe2f, type: 3}
+      propertyPath: m_Parameters.textureScale.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768184849469376548, guid: 5b95129f15a0bd442af36c41972bbe2f, type: 3}
+      propertyPath: m_Parameters.textureScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768184849469376548, guid: 5b95129f15a0bd442af36c41972bbe2f, type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 1994700191072513833, guid: 5b95129f15a0bd442af36c41972bbe2f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4145,18 +4169,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1451108474}
     m_Modifications:
-    - target: {fileID: 34522504471147818, guid: 8aae1842756e5244885b6351fcf3e6ba, type: 3}
-      propertyPath: defaultColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 34522504471147818, guid: 8aae1842756e5244885b6351fcf3e6ba, type: 3}
-      propertyPath: defaultColor.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 34522504471147818, guid: 8aae1842756e5244885b6351fcf3e6ba, type: 3}
-      propertyPath: defaultColor.r
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5293528300792237225, guid: 8aae1842756e5244885b6351fcf3e6ba, type: 3}
       propertyPath: m_Name
       value: AngleVisual
