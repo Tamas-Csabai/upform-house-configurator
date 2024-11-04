@@ -42,6 +42,11 @@ namespace Upform.Editor
                     findComponent = targetComponent.GetComponentInParent(fieldInfo.FieldType, true);
                 }
 
+                if (findComponent == null)
+                {
+                    findComponent = Object.FindFirstObjectByType(fieldInfo.FieldType, FindObjectsInactive.Include) as Component;
+                }
+
                 EditorUtility.SetDirty(property.serializedObject.targetObject);
                 property.objectReferenceValue = findComponent;
                 EditorUtility.SetDirty(property.serializedObject.targetObject);

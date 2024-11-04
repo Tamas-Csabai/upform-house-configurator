@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using Upform.Graphs;
+using Upform.Interaction;
 
 namespace Upform.Designer
 {
@@ -18,7 +20,7 @@ namespace Upform.Designer
 
         [Header("Visuals")]
         [SerializeField] private AngleVisual angleVisual;
-        [SerializeField] private LineVisual lineVisual;
+        [SerializeField] private LineVisual pointerLineVisual;
 
         [Header("Components")]
         [SerializeField] private DesignerComponenet[] designerComponenets;
@@ -31,7 +33,7 @@ namespace Upform.Designer
         private void Start()
         {
             angleVisual.gameObject.SetActive(false);
-            lineVisual.gameObject.SetActive(false);
+            pointerLineVisual.gameObject.SetActive(false);
 
             gridSnap.Size = defaultGridCellSize;
 
@@ -73,6 +75,30 @@ namespace Upform.Designer
         public void SetAngleVisualActive(bool isActive)
         {
             angleVisual.gameObject.SetActive(isActive);
+        }
+
+        public void SetPointerLineStartPosition(Vector3 startPosition)
+        {
+            pointerLineVisual.StartPoint.position = startPosition;
+        }
+
+        public void EnablePointerLineVisual()
+        {
+            InteractionManager.OnHovering += Hovering;
+
+            pointerLineVisual.gameObject.SetActive(true);
+        }
+
+        public void DisablePointerLineVisual()
+        {
+            InteractionManager.OnHovering -= Hovering;
+
+            pointerLineVisual.gameObject.SetActive(false);
+        }
+
+        private void Hovering(InteractionHit interactionHit)
+        {
+            pointerLineVisual.EndPoint.position = interactionHit.Point;
         }
 
 #if UNITY_EDITOR

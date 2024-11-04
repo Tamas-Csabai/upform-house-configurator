@@ -1,5 +1,4 @@
 
-using System;
 using UnityEngine;
 using Upform.Graphs;
 using Upform.Interaction;
@@ -14,6 +13,7 @@ namespace Upform.Designer
         [SerializeField] private StateSO emptySelectionStateSO;
         [SerializeField] private WallSO wallSO;
         [SerializeField] private Graph graph;
+        [SerializeField] private DesignerHandler designerHandler;
         [SerializeField] private IntersectionCreator intersectionCreator;
 
         private Intersection _startIntersection;
@@ -50,10 +50,13 @@ namespace Upform.Designer
         {
             if (_startIntersection == null)
             {
-                _startIntersection = intersection;
+                SetStartIntersection(intersection);
             }
             else
             {
+                designerHandler.SetPointerLineStartPosition(intersection.transform.position);
+                designerHandler.EnablePointerLineVisual();
+
                 ConnectWall(intersection);
             }
         }
@@ -62,7 +65,7 @@ namespace Upform.Designer
         {
             if (_startIntersection == null)
             {
-                _startIntersection = intersection;
+                SetStartIntersection(intersection);
             }
             else
             {
@@ -79,7 +82,7 @@ namespace Upform.Designer
         {
             if (_startIntersection == null)
             {
-                _startIntersection = intersection;
+                SetStartIntersection(intersection);
             }
             else
             {
@@ -87,6 +90,14 @@ namespace Upform.Designer
 
                 Confirm();
             }
+        }
+
+        private void SetStartIntersection(Intersection intersection)
+        {
+            _startIntersection = intersection;
+
+            designerHandler.SetPointerLineStartPosition(intersection.transform.position);
+            designerHandler.EnablePointerLineVisual();
         }
 
         private void ConnectWall(Intersection intersection)
@@ -104,6 +115,8 @@ namespace Upform.Designer
         private void Confirm()
         {
             SelectionManager.ClearSelection();
+
+            designerHandler.DisablePointerLineVisual();
 
             Exit(emptySelectionStateSO);
         }

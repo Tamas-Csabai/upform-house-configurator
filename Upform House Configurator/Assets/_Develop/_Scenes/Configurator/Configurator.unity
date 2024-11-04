@@ -589,6 +589,7 @@ MonoBehaviour:
   emptySelectionStateSO: {fileID: 11400000, guid: 4d76fdbdc2a231c438280e342d0dad9b, type: 2}
   wallSO: {fileID: 11400000, guid: 83c2f84e5a85d1441820c7b6e1a5d11d, type: 2}
   graph: {fileID: 53405299}
+  designerHandler: {fileID: 1123537027}
   intersectionCreator: {fileID: 1143751180}
 --- !u!114 &360047901
 MonoBehaviour:
@@ -620,6 +621,7 @@ MonoBehaviour:
   emptySelectionStateSO: {fileID: 11400000, guid: 4d76fdbdc2a231c438280e342d0dad9b, type: 2}
   wallSO: {fileID: 11400000, guid: 3fb655a5cc3224f448af905a364db75c, type: 2}
   graph: {fileID: 53405299}
+  designerHandler: {fileID: 1123537027}
   intersectionCreator: {fileID: 1143751180}
 --- !u!114 &360047903
 MonoBehaviour:
@@ -2153,8 +2155,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Upform.Designer.DesignerController, Assembly-CSharp
+      - m_Target: {fileID: 1123537027}
+        m_TargetAssemblyTypeName: Upform.Designer.DesignerHandler, Assembly-CSharp
         m_MethodName: SetGridSize
         m_Mode: 0
         m_Arguments:
@@ -2623,7 +2625,7 @@ MonoBehaviour:
   gridSnap: {fileID: 1123537025}
   angleSnap: {fileID: 1123537026}
   angleVisual: {fileID: 1614100348}
-  lineVisual: {fileID: 443439567}
+  pointerLineVisual: {fileID: 443439567}
   designerComponenets:
   - {fileID: 1143751180}
   - {fileID: 1143751182}
@@ -3881,8 +3883,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Upform.Designer.DesignerController, Assembly-CSharp
+      - m_Target: {fileID: 1123537027}
+        m_TargetAssemblyTypeName: Upform.Designer.DesignerHandler, Assembly-CSharp
         m_MethodName: SetAngleStep
         m_Mode: 0
         m_Arguments:
