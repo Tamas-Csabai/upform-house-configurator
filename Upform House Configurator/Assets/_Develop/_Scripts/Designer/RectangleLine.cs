@@ -51,7 +51,7 @@ namespace Upform.Designer
 
         private void Awake()
         {
-            _mesh = MeshBuilder.CreateNewQuad(bottomLeftPoint.localPosition, bottomRightPoint.localPosition, topLeftPoint.localPosition, topRightPoint.localPosition);
+            _mesh = MeshUtils.CreateNewQuad(bottomLeftPoint.localPosition, bottomRightPoint.localPosition, topLeftPoint.localPosition, topRightPoint.localPosition);
 
             _length = Mathf.Abs(bottomLeftPoint.localPosition.x - bottomRightPoint.localPosition.x);
 
@@ -80,7 +80,7 @@ namespace Upform.Designer
 
         public void RecalculateMesh()
         {
-            MeshBuilder.SetQuadVertices(ref _mesh, bottomLeftPoint.localPosition, bottomRightPoint.localPosition, topLeftPoint.localPosition, topRightPoint.localPosition);
+            MeshUtils.SetQuadVertices(ref _mesh, bottomLeftPoint.localPosition, bottomRightPoint.localPosition, topLeftPoint.localPosition, topRightPoint.localPosition);
 
             meshFilter.mesh = _mesh;
         }

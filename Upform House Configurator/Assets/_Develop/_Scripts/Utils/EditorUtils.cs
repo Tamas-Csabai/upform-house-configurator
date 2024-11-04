@@ -14,6 +14,15 @@ namespace Upform
 
             UnityEditor.EditorUtility.SetDirty(monoBehaviour);
         }
+
+        public static void EDITOR_GetComponentsInChildren<T>(MonoBehaviour monoBehaviour, ref T[] objects) where T : Object
+        {
+            UnityEditor.EditorUtility.SetDirty(monoBehaviour);
+
+            objects = monoBehaviour.GetComponentsInChildren<T>();
+
+            UnityEditor.EditorUtility.SetDirty(monoBehaviour);
+        }
 #endif
 
     }

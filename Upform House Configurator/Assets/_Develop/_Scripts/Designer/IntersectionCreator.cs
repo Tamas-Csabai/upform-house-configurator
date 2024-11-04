@@ -70,21 +70,21 @@ namespace Upform.Designer
 
             _newIntersectionVisualPoint.gameObject.SetActive(false);
             _confirmVisualPoint.gameObject.SetActive(false);
-            _angles.SetLineActive(false);
+            _designerHandler.SetAngleVisualActive(false);
         }
 
         private void Interact(InteractionHit interactionHit)
         {
             if (_currentIntersection == null)
             {
-                Node newNode = _graph.AddNewNode(_newIntersectionPosition);
+                Node newNode = _designerHandler.Graph.AddNewNode(_newIntersectionPosition);
 
                 _currentIntersection = newNode.GetComponent<Intersection>();
                 _currentIntersection.WallSO = _wallSO;
 
                 if (_currentHoveredWall != null)
                 {
-                    Edge newEdge = _graph.InsertNode(newNode, _currentHoveredWall.Edge);
+                    Edge newEdge = _designerHandler.Graph.InsertNode(newNode, _currentHoveredWall.Edge);
 
                     Wall newWall = newEdge.GetComponent<Wall>();
                     newWall.WallSO = _currentHoveredWall.WallSO;
@@ -107,7 +107,7 @@ namespace Upform.Designer
 
         private void Hovering(InteractionHit interactionHit)
         {
-            Vector3 interactionPoint = _grid.WorldToCellOnPlane(interactionHit.Point);
+            Vector3 interactionPoint = _designerHandler.GridSnap.WorldToCellOnPlane(interactionHit.Point);
 
             if (!_hasSnapPoint)
             {
@@ -115,13 +115,13 @@ namespace Upform.Designer
 
                 if (_prevIntersection != null)
                 {
-                    angledPosition = _angles.WorldToAngleOnPlane(_prevIntersection.transform.position, interactionPoint);
+                    angledPosition = _designerHandler.AngleSnap.WorldToAngleOnPlane(_prevIntersection.transform.position, interactionPoint);
 
-                    _angles.SetLineActive(true);
-                    _angles.SetLine(_prevIntersection.transform.position, _prevIntersection.transform.position + Vector3.right, angledPosition);
+                    _designerHandler.SetAngleVisualActive(true);
+                    _designerHandler.SetAngleVisual(_prevIntersection.transform.position, _prevIntersection.transform.position + Vector3.right, angledPosition);
                 }
 
-                _newIntersectionPosition = angledPosition + (_verticalOffset * Vector3.up);
+                _newIntersectionPosition = angledPosition + (_designerHandler.VerticalOffset * Vector3.up);
             }
             else
             {
@@ -133,8 +133,8 @@ namespace Upform.Designer
 
                     if (_prevIntersection != null)
                     {
-                        _angles.SetLineActive(true);
-                        _angles.SetLine(_prevIntersection.transform.position, _prevIntersection.transform.position + Vector3.right, _newIntersectionPosition);
+                        _designerHandler.SetAngleVisualActive(true);
+                        _designerHandler.SetAngleVisual(_prevIntersection.transform.position, _prevIntersection.transform.position + Vector3.right, _newIntersectionPosition);
                     }
                 }
             }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Upform
 {
-    public static class MeshBuilder
+    public static class MeshUtils
     {
 
         public static Mesh CreateNewQuad(Vector3 a, Vector3 b, Vector3 c, Vector3 d)

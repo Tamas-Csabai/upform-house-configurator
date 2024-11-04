@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Upform
+namespace Upform.Graphics
 {
     public class DrawGrid_GL : MonoBehaviour
     {

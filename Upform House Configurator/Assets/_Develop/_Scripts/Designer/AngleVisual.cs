@@ -1,12 +1,15 @@
+
 using TMPro;
 using UnityEngine;
 
 namespace Upform.Designer
 {
-    public class AngleLine : MonoBehaviour
+    public class AngleVisual : MonoBehaviour
     {
-        public static int ObjectCount = 0;
 
+        private const string COLOR_PROPERTY_NAME = "_BaseColor";
+        private const string ANGLE_UNIT_TEXT = "°";
+        private const string ANGLE_FORMAT = "0.00";
         private const float ANGLE_ARC_DETAILNESS = 0.2f;
 
         [SerializeField] private Transform crossPoint;
@@ -16,6 +19,7 @@ namespace Upform.Designer
         [SerializeField] private LineRenderer lineRenderer1;
         [SerializeField] private LineRenderer lineRenderer2;
         [SerializeField] private LineRenderer angleLineRenderer;
+        [SerializeField] private Color defaultColor = Color.white;
 
         public Transform CrossPoint => crossPoint;
         public Transform Point1 => point1;
@@ -23,7 +27,7 @@ namespace Upform.Designer
 
         private void Awake()
         {
-            ObjectCount++;
+            SetColor(defaultColor);
 
             lineRenderer1.loop = false;
             lineRenderer2.loop = false;
@@ -55,7 +59,7 @@ namespace Upform.Designer
 
             float angle = Vector3.Angle(axis1, axis2);
 
-            lengthText.text = angle.ToString("0.00") + "°";
+            lengthText.text = angle.ToString(ANGLE_FORMAT) + ANGLE_UNIT_TEXT;
 
             float angleInDeg = Mathf.Deg2Rad * angle;
 
@@ -91,5 +95,32 @@ namespace Upform.Designer
             Vector3 lastPos = crossPoint.position + (lookRotation * new Vector3(-lastX, -lastY, 0));
             angleLineRenderer.SetPosition(arcPointIndex, lastPos);
         }
+
+        public void SetPoint1(Vector3 position)
+        {
+            point1.transform.position = position;
+        }
+
+        public void SetPoint2(Vector3 position)
+        {
+            point2.transform.position = position;
+        }
+
+        public void SetColor(Color color)
+        {
+            SetLineColor(lineRenderer1, color);
+            SetLineColor(lineRenderer2, color);
+            SetLineColor(angleLineRenderer, color);
+        }
+
+        private void SetLineColor(LineRenderer lineRenderer, Color color)
+        {
+            Material lineMaterial = lineRenderer.material;
+
+            lineMaterial.SetColor(COLOR_PROPERTY_NAME, color);
+
+            lineRenderer.material = lineMaterial;
+        }
+
     }
 }

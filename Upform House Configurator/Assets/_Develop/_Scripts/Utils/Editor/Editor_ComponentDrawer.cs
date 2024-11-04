@@ -6,7 +6,7 @@ namespace Upform.Editor
 {
 
     [CustomPropertyDrawer(typeof(Component), true)]
-    public class Component_Drawer : PropertyDrawer
+    public class Editor_ComponentDrawer : PropertyDrawer
     {
         Rect propertyFieldRect;
         Rect findButtonRect;

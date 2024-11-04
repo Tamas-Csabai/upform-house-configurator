@@ -1,5 +1,3 @@
-
-using TMPro;
 using UnityEngine;
 
 namespace Upform.Designer
@@ -7,38 +5,31 @@ namespace Upform.Designer
     public class LengthLine : MonoBehaviour
     {
 
-        [SerializeField] private LineRenderer lineRenderer;
-        [SerializeField] private TextMeshPro textMeshPro;
-        [SerializeField] private Transform startPoint;
-        [SerializeField] private Transform endPoint;
+        private const string LENGTH_FORMAT = "0.00";
 
-        private Vector3 _prevVector;
+        [SerializeField] private LineVisual lineVisual;
+
+        private Vector3 _prevLineVector;
 
         private void Awake()
         {
-            lineRenderer.positionCount = 2;
-
-            lineRenderer.SetPosition(0, startPoint.position);
-            lineRenderer.SetPosition(1, endPoint.position);
-
-            _prevVector = endPoint.position - startPoint.position;
-
-            textMeshPro.transform.position = startPoint.position + (_prevVector / 2f);
-            textMeshPro.text = _prevVector.magnitude.ToString("0.00");
+            _prevLineVector = lineVisual.EndPoint.position - lineVisual.StartPoint.position;
         }
 
-        private void LateUpdate()
+        private void Start()
         {
-            lineRenderer.SetPosition(0, startPoint.position);
-            lineRenderer.SetPosition(1, endPoint.position);
+            lineVisual.SetText(_prevLineVector.magnitude.ToString(LENGTH_FORMAT));
+        }
 
-            Vector3 vector = endPoint.position - startPoint.position;
+        private void Update()
+        {
+            Vector3 lineVector = lineVisual.EndPoint.position - lineVisual.StartPoint.position;
 
-            if(vector != _prevVector)
+            if (_prevLineVector != lineVector)
             {
-                _prevVector = vector;
-                textMeshPro.transform.position = startPoint.position + (vector / 2f);
-                textMeshPro.text = vector.magnitude.ToString("0.00");
+                _prevLineVector = lineVector;
+
+                lineVisual.SetText(lineVector.magnitude.ToString(LENGTH_FORMAT));
             }
         }
 

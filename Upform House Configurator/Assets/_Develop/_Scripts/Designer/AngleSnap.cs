@@ -1,12 +1,9 @@
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace Upform.Designer
 {
-    public class Angles : MonoBehaviour
+    public class AngleSnap : MonoBehaviour
     {
-
-        [SerializeField] private AngleLine angleLine;
 
         private float _step;
 
@@ -36,11 +33,6 @@ namespace Upform.Designer
             }
         }
 
-        private void Awake()
-        {
-            angleLine.gameObject.SetActive(false);
-        }
-
         public Vector3 WorldToAngleOnPlane(Vector3 origin, Vector3 worldPosition)
         {
             if(_step == 0)
@@ -68,30 +60,5 @@ namespace Upform.Designer
             return closestPoint;
         }
 
-        public void SetLine(Vector3 crossPoint, Vector3 point1, Vector3 point2)
-        {
-            angleLine.CrossPoint.position = crossPoint;
-            angleLine.Point1.position = point1;
-            angleLine.Point2.position = point2;
-        }
-
-        public void SetLineActive(bool isActive)
-        {
-            angleLine.gameObject.SetActive(isActive);
-        }
-
-        /*
-        private void OnDrawGizmos()
-        {
-            if(_stepDirections != null)
-            {
-                for (int i = 0; i < _stepDirections.Length; i++)
-                {
-                    Gizmos.color = Color.yellow;
-                    Gizmos.DrawLine(Vector3.zero, _stepDirections[i]);
-                }
-            }
-        }
-        */
     }
 }
